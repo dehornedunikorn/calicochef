@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Home, BookOpen, CalendarDays, ShoppingBasket, Cat } from "lucide-react";
+import { RecipesView } from "@/components/recipes-view";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -71,6 +72,17 @@ function Index() {
 
       {/* SCROLLABLE MIDDLE */}
       <section className="hide-scrollbar flex-1 overflow-y-auto px-4 pb-28 pt-4">
+        {activeTab === "recipes" ? (
+          <RecipesView />
+        ) : activeTab !== "home" ? (
+          <div className="grid h-full place-items-center text-center text-muted-foreground">
+            <div>
+              <p className="text-5xl">🐈</p>
+              <p className="mt-3 text-sm">This room is still being unpacked…</p>
+            </div>
+          </div>
+        ) : (
+          <>
         {/* Macro Tracker */}
         <article className="rounded-3xl bg-card p-5 shadow-sm ring-1 ring-border/60">
           <div className="flex items-center justify-between">
