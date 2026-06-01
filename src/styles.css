@@ -141,5 +141,22 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    overflow: hidden;
+    overscroll-behavior: none;
   }
+
+  html, body, #root {
+    height: 100%;
+  }
+}
+
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.glass {
+  background: color-mix(in oklab, white 70%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
 }
