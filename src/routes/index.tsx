@@ -155,6 +155,8 @@ function Index() {
           <CatSlider label="Mood" value={mood} onChange={setMood} />
           <CatSlider label="Productivity" value={productivity} onChange={setProductivity} />
         </div>
+        </>
+        )}
       </section>
 
       {/* STICKY BOTTOM */}
