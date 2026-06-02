@@ -85,13 +85,10 @@ function Index() {
           <RecipesView />
         ) : activeTab === "planner" ? (
           <PlannerView />
-        ) : activeTab !== "home" ? (
-          <div className="grid h-full place-items-center text-center text-muted-foreground">
-            <div>
-              <p className="text-5xl">🐈</p>
-              <p className="mt-3 text-sm">This room is still being unpacked…</p>
-            </div>
-          </div>
+        ) : activeTab === "shopping" ? (
+          <ShoppingView />
+        ) : activeTab === "profile" ? (
+          <ProfileView />
         ) : (
           <>
         {/* Macro Tracker */}
