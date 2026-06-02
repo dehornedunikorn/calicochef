@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Home, BookOpen, CalendarDays, ShoppingBasket, Cat } from "lucide-react";
 import { RecipesView } from "@/components/recipes-view";
+import { PlannerView } from "@/components/planner-view";
 
 export const Route = createFileRoute("/")({
   head: () => ({
