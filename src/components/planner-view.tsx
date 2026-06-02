@@ -1,24 +1,7 @@
 import { useMemo, useState } from "react";
 import { AlertTriangle, Plus, Sparkles, X } from "lucide-react";
 import { RECIPES, type Recipe } from "@/components/recipes-view";
-
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const DAILY_TARGET = 2000;
-
-type MealSlot = {
-  id: string;
-  name: string;
-  pct: number; // target percentage
-  recipeId?: string;
-  servings?: number; // custom serving size (can be fractional)
-};
-
-const DEFAULT_SLOTS = (): MealSlot[] => [
-  { id: "b", name: "Breakfast", pct: 25 },
-  { id: "l", name: "Lunch", pct: 40 },
-  { id: "d", name: "Dinner", pct: 25 },
-  { id: "s", name: "Snack", pct: 10 },
-];
+import { DAYS, useAppState, type MealSlot } from "@/lib/app-state";
 
 const fmt = (n: number) => {
   const r = Math.round(n * 10) / 10;
@@ -33,15 +16,14 @@ function mealKcal(slot: MealSlot): number {
 }
 
 export function PlannerView() {
+  const { dailyTarget, week, setWeek } = useAppState();
   const [dayIdx, setDayIdx] = useState(0);
-  // week: 7 days × slots
-  const [week, setWeek] = useState<MealSlot[][]>(() => DAYS.map(() => DEFAULT_SLOTS()));
   const [picker, setPicker] = useState<{ slotId: string } | null>(null);
 
   const slots = week[dayIdx];
   const totalKcal = useMemo(() => slots.reduce((s, m) => s + mealKcal(m), 0), [slots]);
   const totalPct = slots.reduce((s, m) => s + m.pct, 0);
-  const over = totalKcal > DAILY_TARGET;
+  const over = totalKcal > dailyTarget;
 
   const updateSlot = (id: string, patch: Partial<MealSlot>) => {
     setWeek((w) =>
@@ -59,10 +41,10 @@ export function PlannerView() {
   const smartScale = (slot: MealSlot) => {
     const r = RECIPES.find((x) => x.id === slot.recipeId);
     if (!r) return;
-    const budget = (DAILY_TARGET * slot.pct) / 100;
+    const budget = (dailyTarget * slot.pct) / 100;
     // Already consumed by other meals
     const otherKcal = slots.filter((s) => s.id !== slot.id).reduce((s, m) => s + mealKcal(m), 0);
-    const remainingDaily = DAILY_TARGET - otherKcal;
+    const remainingDaily = dailyTarget - otherKcal;
     const target = Math.min(budget, Math.max(0, remainingDaily));
     const perServing = r.macros.kcal / r.base_servings;
     const newServings = Math.max(0.1, Math.round((target / perServing) * 10) / 10);
@@ -95,7 +77,7 @@ export function PlannerView() {
             <p className="text-xs uppercase tracking-wider text-muted-foreground">Planned Total</p>
             <p className="mt-1 text-2xl font-bold">
               {fmt(totalKcal)}
-              <span className="text-sm font-medium text-muted-foreground"> / {DAILY_TARGET} kcal</span>
+              <span className="text-sm font-medium text-muted-foreground"> / {dailyTarget} kcal</span>
             </p>
           </div>
           <div className="text-3xl">{over ? "🙀" : "😺"}</div>
@@ -104,7 +86,7 @@ export function PlannerView() {
           <div
             className="h-full rounded-full transition-all"
             style={{
-              width: `${Math.min(100, (totalKcal / DAILY_TARGET) * 100)}%`,
+              width: `${Math.min(100, (totalKcal / dailyTarget) * 100)}%`,
               background: over
                 ? "linear-gradient(90deg, oklch(0.74 0.16 55), oklch(0.6 0.22 25))"
                 : "linear-gradient(90deg, oklch(0.85 0.12 70), oklch(0.74 0.16 55))",
@@ -132,7 +114,7 @@ export function PlannerView() {
         {slots.map((slot) => {
           const recipe = RECIPES.find((r) => r.id === slot.recipeId);
           const kcal = mealKcal(slot);
-          const budget = (DAILY_TARGET * slot.pct) / 100;
+          const budget = (dailyTarget * slot.pct) / 100;
           const slotOver = kcal > budget + 0.5;
           return (
             <li key={slot.id} className="rounded-3xl bg-card p-3 ring-1 ring-border/60">
