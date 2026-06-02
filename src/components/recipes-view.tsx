@@ -11,7 +11,7 @@ export type Recipe = {
   ingredients: Ingredient[];
 };
 
-const RECIPES: Recipe[] = [
+export const RECIPES: Recipe[] = [
   {
     id: "tuna-toast",
     title: "Tuna & Avocado Toast",
