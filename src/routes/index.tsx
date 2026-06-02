@@ -3,6 +3,9 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight, Home, BookOpen, CalendarDays, ShoppingBasket, Cat } from "lucide-react";
 import { RecipesView } from "@/components/recipes-view";
 import { PlannerView } from "@/components/planner-view";
+import { ShoppingView } from "@/components/shopping-view";
+import { ProfileView } from "@/components/profile-view";
+import { AppStateProvider, useAppState } from "@/lib/app-state";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -11,18 +14,23 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Track meals, mood, and macros with a cute cat-themed daily planner." },
     ],
   }),
-  component: Index,
+  component: () => (
+    <AppStateProvider>
+      <Index />
+    </AppStateProvider>
+  ),
 });
 
 const CAT_SCALE = ["😿", "🙀", "😼", "😺", "😻"];
 
 function Index() {
+  const { dailyTarget } = useAppState();
   const [day, setDay] = useState(0);
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const week = 12;
 
   const consumed = 1420;
-  const target = 2000;
+  const target = dailyTarget;
   const pct = Math.min(100, (consumed / target) * 100);
   const over = consumed > target;
 
