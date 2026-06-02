@@ -75,6 +75,8 @@ function Index() {
       <section className="hide-scrollbar flex-1 overflow-y-auto px-4 pb-28 pt-4">
         {activeTab === "recipes" ? (
           <RecipesView />
+        ) : activeTab === "planner" ? (
+          <PlannerView />
         ) : activeTab !== "home" ? (
           <div className="grid h-full place-items-center text-center text-muted-foreground">
             <div>
