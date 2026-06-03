@@ -117,7 +117,7 @@ export function useCreateRecipe() {
         carbs: recipe.carbs,
         protein: recipe.protein,
         fat: recipe.fat,
-        ingredients: recipe.ingredients as unknown as object,
+        ingredients: recipe.ingredients as unknown as never,
       });
       if (error) throw error;
     },
