@@ -14,7 +14,149 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      daily_journals: {
+        Row: {
+          day_idx: number
+          hunger: number
+          id: string
+          mood: number
+          productivity: number
+          text: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          day_idx: number
+          hunger?: number
+          id?: string
+          mood?: number
+          productivity?: number
+          text?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          day_idx?: number
+          hunger?: number
+          id?: string
+          mood?: number
+          productivity?: number
+          text?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      meal_slots: {
+        Row: {
+          day_idx: number
+          id: string
+          name: string
+          pct: number
+          recipe_id: string | null
+          servings: number | null
+          slot_key: string
+          sort_order: number
+          user_id: string
+        }
+        Insert: {
+          day_idx: number
+          id?: string
+          name: string
+          pct?: number
+          recipe_id?: string | null
+          servings?: number | null
+          slot_key: string
+          sort_order?: number
+          user_id: string
+        }
+        Update: {
+          day_idx?: number
+          id?: string
+          name?: string
+          pct?: number
+          recipe_id?: string | null
+          servings?: number | null
+          slot_key?: string
+          sort_order?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meal_slots_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          target_kcal: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+          target_kcal?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          target_kcal?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      recipes: {
+        Row: {
+          base_servings: number
+          carbs: number
+          created_at: string
+          emoji: string
+          fat: number
+          id: string
+          ingredients: Json
+          kcal: number
+          protein: number
+          title: string
+          user_id: string
+        }
+        Insert: {
+          base_servings?: number
+          carbs?: number
+          created_at?: string
+          emoji?: string
+          fat?: number
+          id?: string
+          ingredients?: Json
+          kcal?: number
+          protein?: number
+          title: string
+          user_id: string
+        }
+        Update: {
+          base_servings?: number
+          carbs?: number
+          created_at?: string
+          emoji?: string
+          fat?: number
+          id?: string
+          ingredients?: Json
+          kcal?: number
+          protein?: number
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
