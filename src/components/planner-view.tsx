@@ -1,59 +1,56 @@
 import { useMemo, useState } from "react";
 import { AlertTriangle, Plus, Sparkles, X } from "lucide-react";
-import { RECIPES, type Recipe } from "@/components/recipes-view";
-import { DAYS, useAppState, type MealSlot } from "@/lib/app-state";
+import {
+  DAYS,
+  mealKcal,
+  useMealSlots,
+  useProfile,
+  useRecipes,
+  useUpdateSlot,
+  type MealSlot,
+  type Recipe,
+} from "@/lib/data-hooks";
 
 const fmt = (n: number) => {
   const r = Math.round(n * 10) / 10;
   return Number.isInteger(r) ? r.toString() : r.toFixed(1);
 };
 
-function mealKcal(slot: MealSlot): number {
-  if (!slot.recipeId || !slot.servings) return 0;
-  const r = RECIPES.find((x) => x.id === slot.recipeId);
-  if (!r) return 0;
-  return (r.macros.kcal * slot.servings) / r.base_servings;
-}
-
 export function PlannerView() {
-  const { dailyTarget, week, setWeek } = useAppState();
+  const { data: profile } = useProfile();
+  const { data: slots = [] } = useMealSlots();
+  const { data: recipes = [] } = useRecipes();
+  const updateSlot = useUpdateSlot();
   const [dayIdx, setDayIdx] = useState(0);
   const [picker, setPicker] = useState<{ slotId: string } | null>(null);
 
-  const slots = week[dayIdx];
-  const totalKcal = useMemo(() => slots.reduce((s, m) => s + mealKcal(m), 0), [slots]);
-  const totalPct = slots.reduce((s, m) => s + m.pct, 0);
+  const dailyTarget = profile?.target_kcal ?? 2000;
+  const daySlots = useMemo(() => slots.filter((s) => s.day_idx === dayIdx), [slots, dayIdx]);
+  const totalKcal = daySlots.reduce((s, m) => s + mealKcal(m, recipes), 0);
+  const totalPct = daySlots.reduce((s, m) => s + m.pct, 0);
   const over = totalKcal > dailyTarget;
 
-  const updateSlot = (id: string, patch: Partial<MealSlot>) => {
-    setWeek((w) =>
-      w.map((day, di) =>
-        di === dayIdx ? day.map((s) => (s.id === id ? { ...s, ...patch } : s)) : day,
-      ),
-    );
-  };
-
   const assignRecipe = (slotId: string, recipe: Recipe) => {
-    updateSlot(slotId, { recipeId: recipe.id, servings: recipe.base_servings });
+    updateSlot.mutate({ id: slotId, patch: { recipe_id: recipe.id, servings: recipe.base_servings } });
     setPicker(null);
   };
 
   const smartScale = (slot: MealSlot) => {
-    const r = RECIPES.find((x) => x.id === slot.recipeId);
+    const r = recipes.find((x) => x.id === slot.recipe_id);
     if (!r) return;
     const budget = (dailyTarget * slot.pct) / 100;
-    // Already consumed by other meals
-    const otherKcal = slots.filter((s) => s.id !== slot.id).reduce((s, m) => s + mealKcal(m), 0);
+    const otherKcal = daySlots
+      .filter((s) => s.id !== slot.id)
+      .reduce((s, m) => s + mealKcal(m, recipes), 0);
     const remainingDaily = dailyTarget - otherKcal;
     const target = Math.min(budget, Math.max(0, remainingDaily));
-    const perServing = r.macros.kcal / r.base_servings;
+    const perServing = r.kcal / r.base_servings;
     const newServings = Math.max(0.1, Math.round((target / perServing) * 10) / 10);
-    updateSlot(slot.id, { servings: newServings });
+    updateSlot.mutate({ id: slot.id, patch: { servings: newServings } });
   };
 
   return (
     <>
-      {/* Week selector */}
       <div className="flex gap-1.5">
         {DAYS.map((d, i) => (
           <button
@@ -70,7 +67,6 @@ export function PlannerView() {
         ))}
       </div>
 
-      {/* Daily total card */}
       <article className="mt-4 rounded-3xl bg-card p-4 ring-1 ring-border/60">
         <div className="flex items-center justify-between">
           <div>
@@ -106,14 +102,13 @@ export function PlannerView() {
         )}
       </article>
 
-      {/* Meal slots */}
       <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         {DAYS[dayIdx]}'s Meals
       </h2>
       <ul className="space-y-2.5">
-        {slots.map((slot) => {
-          const recipe = RECIPES.find((r) => r.id === slot.recipeId);
-          const kcal = mealKcal(slot);
+        {daySlots.map((slot) => {
+          const recipe = recipes.find((r) => r.id === slot.recipe_id);
+          const kcal = mealKcal(slot, recipes);
           const budget = (dailyTarget * slot.pct) / 100;
           const slotOver = kcal > budget + 0.5;
           return (
@@ -123,7 +118,7 @@ export function PlannerView() {
                   <input
                     type="text"
                     value={slot.name}
-                    onChange={(e) => updateSlot(slot.id, { name: e.target.value })}
+                    onChange={(e) => updateSlot.mutate({ id: slot.id, patch: { name: e.target.value } })}
                     className="w-24 rounded-lg bg-transparent text-sm font-semibold outline-none focus:bg-secondary/60 focus:px-1.5"
                   />
                   <div className="flex items-center gap-1 rounded-full bg-accent px-2 py-0.5">
@@ -133,7 +128,10 @@ export function PlannerView() {
                       max={100}
                       value={slot.pct}
                       onChange={(e) =>
-                        updateSlot(slot.id, { pct: Math.max(0, Math.min(100, Number(e.target.value) || 0)) })
+                        updateSlot.mutate({
+                          id: slot.id,
+                          patch: { pct: Math.max(0, Math.min(100, Number(e.target.value) || 0)) },
+                        })
                       }
                       className="w-8 bg-transparent text-center text-xs font-bold tabular-nums outline-none"
                     />
@@ -166,7 +164,7 @@ export function PlannerView() {
                     Smart Scale
                   </button>
                   <button
-                    onClick={() => updateSlot(slot.id, { recipeId: undefined, servings: undefined })}
+                    onClick={() => updateSlot.mutate({ id: slot.id, patch: { recipe_id: null, servings: null } })}
                     className="grid h-7 w-7 place-items-center rounded-full bg-card ring-1 ring-border active:scale-90"
                     aria-label="Remove recipe"
                   >
@@ -189,6 +187,7 @@ export function PlannerView() {
 
       {picker && (
         <RecipePicker
+          recipes={recipes}
           onPick={(r) => assignRecipe(picker.slotId, r)}
           onClose={() => setPicker(null)}
         />
@@ -197,7 +196,15 @@ export function PlannerView() {
   );
 }
 
-function RecipePicker({ onPick, onClose }: { onPick: (r: Recipe) => void; onClose: () => void }) {
+function RecipePicker({
+  recipes,
+  onPick,
+  onClose,
+}: {
+  recipes: Recipe[];
+  onPick: (r: Recipe) => void;
+  onClose: () => void;
+}) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-background/60 backdrop-blur-sm">
       <div className="mt-auto flex max-h-[80%] flex-col rounded-t-[2rem] bg-card shadow-2xl ring-1 ring-border/60">
@@ -214,7 +221,7 @@ function RecipePicker({ onPick, onClose }: { onPick: (r: Recipe) => void; onClos
           <p className="text-xs text-muted-foreground">Choose what to assign to this meal 🐾</p>
         </div>
         <div className="hide-scrollbar grid flex-1 grid-cols-2 gap-3 overflow-y-auto px-5 pb-8 pt-2">
-          {RECIPES.map((r) => (
+          {recipes.map((r) => (
             <button
               key={r.id}
               onClick={() => onPick(r)}
@@ -225,7 +232,7 @@ function RecipePicker({ onPick, onClose }: { onPick: (r: Recipe) => void; onClos
               </div>
               <p className="mt-2 line-clamp-2 text-xs font-semibold leading-snug">{r.title}</p>
               <p className="mt-0.5 text-[10px] text-muted-foreground">
-                <span className="text-primary">{r.macros.kcal}</span> kcal · {r.base_servings} serv
+                <span className="text-primary">{r.kcal}</span> kcal · {r.base_servings} serv
               </p>
             </button>
           ))}

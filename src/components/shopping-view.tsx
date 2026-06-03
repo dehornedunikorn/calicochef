@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Check, Printer } from "lucide-react";
-import { RECIPES } from "@/components/recipes-view";
-import { useAppState } from "@/lib/app-state";
+import { useMealSlots, useRecipes } from "@/lib/data-hooks";
 
 const fmt = (n: number) => {
   const r = Math.round(n * 100) / 100;
@@ -11,28 +10,27 @@ const fmt = (n: number) => {
 type AggItem = { key: string; name: string; unit: string; amount: number };
 
 export function ShoppingView() {
-  const { week } = useAppState();
+  const { data: slots = [] } = useMealSlots();
+  const { data: recipes = [] } = useRecipes();
   const [bought, setBought] = useState<Record<string, boolean>>({});
 
   const items = useMemo<AggItem[]>(() => {
     const map = new Map<string, AggItem>();
-    for (const day of week) {
-      for (const slot of day) {
-        if (!slot.recipeId || !slot.servings) continue;
-        const recipe = RECIPES.find((r) => r.id === slot.recipeId);
-        if (!recipe) continue;
-        const mult = slot.servings / recipe.base_servings;
-        for (const ing of recipe.ingredients) {
-          const key = `${ing.name.toLowerCase()}::${ing.unit.toLowerCase()}`;
-          const existing = map.get(key);
-          const add = ing.amount * mult;
-          if (existing) existing.amount += add;
-          else map.set(key, { key, name: ing.name, unit: ing.unit, amount: add });
-        }
+    for (const slot of slots) {
+      if (!slot.recipe_id || !slot.servings) continue;
+      const recipe = recipes.find((r) => r.id === slot.recipe_id);
+      if (!recipe) continue;
+      const mult = slot.servings / recipe.base_servings;
+      for (const ing of recipe.ingredients) {
+        const key = `${ing.name.toLowerCase()}::${ing.unit.toLowerCase()}`;
+        const existing = map.get(key);
+        const add = ing.amount * mult;
+        if (existing) existing.amount += add;
+        else map.set(key, { key, name: ing.name, unit: ing.unit, amount: add });
       }
     }
     return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
-  }, [week]);
+  }, [slots, recipes]);
 
   const remaining = items.filter((i) => !bought[i.key]).length;
 

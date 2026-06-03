@@ -1,11 +1,25 @@
-import { useState } from "react";
-import { Activity, Cat } from "lucide-react";
-import { useAppState } from "@/lib/app-state";
+import { useEffect, useState } from "react";
+import { Activity, Cat, LogOut } from "lucide-react";
+import { useProfile, useUpdateProfile } from "@/lib/data-hooks";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "@tanstack/react-router";
 
 export function ProfileView() {
-  const { dailyTarget, setDailyTarget } = useAppState();
+  const { data: profile } = useProfile();
+  const updateProfile = useUpdateProfile();
+  const navigate = useNavigate();
+  const [target, setTarget] = useState<number>(profile?.target_kcal ?? 2000);
   const [synced, setSynced] = useState(false);
   const [syncing, setSyncing] = useState(false);
+
+  useEffect(() => {
+    if (profile) setTarget(profile.target_kcal);
+  }, [profile?.target_kcal]);
+
+  const save = (n: number) => {
+    setTarget(n);
+    updateProfile.mutate({ target_kcal: n });
+  };
 
   const handleSync = () => {
     setSyncing(true);
@@ -16,20 +30,30 @@ export function ProfileView() {
     }, 1200);
   };
 
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  };
+
   return (
     <>
-      {/* Profile header */}
       <article className="flex items-center gap-3 rounded-3xl bg-gradient-to-br from-accent to-card p-4 ring-1 ring-border/60">
         <div className="grid h-16 w-16 place-items-center rounded-2xl bg-primary text-3xl text-primary-foreground">
           🐱
         </div>
-        <div>
-          <p className="text-base font-bold">Whiskers</p>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-base font-bold">{profile?.display_name ?? "Whiskers"}</p>
           <p className="text-xs text-muted-foreground">Cozy meal explorer · Week 12</p>
         </div>
+        <button
+          onClick={handleSignOut}
+          className="grid h-10 w-10 place-items-center rounded-full bg-card ring-1 ring-border active:scale-90"
+          aria-label="Sign out"
+        >
+          <LogOut className="h-4 w-4" />
+        </button>
       </article>
 
-      {/* Daily Target */}
       <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         Daily Goal
       </h2>
@@ -47,8 +71,9 @@ export function ProfileView() {
             min={500}
             max={6000}
             step={50}
-            value={dailyTarget}
-            onChange={(e) => setDailyTarget(Math.max(500, Math.min(6000, Number(e.target.value) || 0)))}
+            value={target}
+            onChange={(e) => setTarget(Math.max(500, Math.min(6000, Number(e.target.value) || 0)))}
+            onBlur={() => save(target)}
             className="w-full rounded-2xl bg-secondary/60 px-4 py-3 text-2xl font-bold tabular-nums outline-none focus:bg-secondary"
           />
           <span className="text-sm font-medium text-muted-foreground">kcal</span>
@@ -57,11 +82,9 @@ export function ProfileView() {
           {[1500, 1800, 2000, 2200, 2500].map((p) => (
             <button
               key={p}
-              onClick={() => setDailyTarget(p)}
+              onClick={() => save(p)}
               className={`rounded-full px-3 py-1.5 text-xs font-semibold transition active:scale-95 ${
-                dailyTarget === p
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-foreground"
+                target === p ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"
               }`}
             >
               {p}
@@ -70,7 +93,6 @@ export function ProfileView() {
         </div>
       </article>
 
-      {/* Integrations */}
       <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         Integrations
       </h2>
