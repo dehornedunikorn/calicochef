@@ -183,7 +183,7 @@ function HomeContent({
               <span className="text-base font-medium text-muted-foreground"> / {target}</span>
             </p>
           </div>
-          <div className="text-4xl">{over ? "🙀" : "😺"}</div>
+          <div className="text-5xl animate-bop">{over ? "🙀" : "😺"}</div>
         </div>
         <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-secondary">
           <div
