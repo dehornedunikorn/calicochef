@@ -133,9 +133,10 @@ export function useUpdateRecipe() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, patch }: { id: string; patch: Partial<Omit<Recipe, "id">> }) => {
-      const payload: Record<string, unknown> = { ...patch };
-      if (patch.ingredients) payload.ingredients = patch.ingredients as unknown;
-      const { error } = await supabase.from("recipes").update(payload).eq("id", id);
+      const { error } = await supabase
+        .from("recipes")
+        .update(patch as never)
+        .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["recipes"] }),
