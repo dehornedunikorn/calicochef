@@ -70,26 +70,27 @@ function Index() {
 
   return (
     <main className="flex h-full w-full flex-col bg-background text-foreground">
-      <header className="glass sticky top-0 z-20 flex items-center justify-between border-b border-border/40 px-4 py-3">
+      <header className="glass sticky top-0 z-20 flex items-center justify-between border-b-[2.5px] border-foreground/80 px-4 py-3 shadow-[0_3px_0_0_oklch(0.3_0.04_40_/_0.25)]">
         <button
           onClick={() => setDay((d) => (d - 1 + 7) % 7)}
-          className="grid h-10 w-10 place-items-center rounded-full bg-secondary text-foreground transition active:scale-90"
+          className="press grid h-11 w-11 place-items-center rounded-full bg-secondary cartoon-pill text-foreground"
           aria-label="Previous day"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
         <div className="flex flex-col items-center">
-          <span className="text-[11px] uppercase tracking-widest text-muted-foreground">Week {week}</span>
-          <span className="text-base font-semibold">🐱 {DAYS_FULL[day]}</span>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-primary">🐾 Week {week} 🐾</span>
+          <span className="text-lg font-extrabold">🐱 {DAYS_FULL[day]}</span>
         </div>
         <button
           onClick={() => setDay((d) => (d + 1) % 7)}
-          className="grid h-10 w-10 place-items-center rounded-full bg-secondary text-foreground transition active:scale-90"
+          className="press grid h-11 w-11 place-items-center rounded-full bg-secondary cartoon-pill text-foreground"
           aria-label="Next day"
         >
           <ChevronRight className="h-5 w-5" />
         </button>
       </header>
+
 
       <section className="hide-scrollbar flex-1 overflow-y-auto px-4 pb-28 pt-4">
         {activeTab === "recipes" ? (
@@ -112,7 +113,7 @@ function Index() {
         )}
       </section>
 
-      <nav className="glass pointer-events-auto fixed inset-x-3 bottom-3 z-20 flex items-center justify-around rounded-full border border-white/40 px-2 py-2 shadow-lg">
+      <nav className="glass pointer-events-auto fixed inset-x-3 bottom-3 z-20 flex items-center justify-around rounded-full border-[2.5px] border-foreground px-2 py-2 shadow-[3px_4px_0_0_oklch(0.3_0.04_40)]">
         {tabs.map((t) => {
           const Icon = t.icon;
           const active = activeTab === t.id;
@@ -120,23 +121,26 @@ function Index() {
             <button
               key={t.id}
               onClick={() => setActiveTab(t.id)}
-              className="flex flex-1 flex-col items-center gap-0.5 py-1 transition active:scale-90"
+              className="press flex flex-1 flex-col items-center gap-0.5 py-1"
               aria-label={t.label}
             >
               <div
-                className={`grid h-10 w-10 place-items-center rounded-2xl transition-all duration-300 ${
-                  active ? "bg-primary text-primary-foreground scale-110 shadow-md -translate-y-1 rotate-[-4deg]" : "text-muted-foreground"
+                className={`grid h-11 w-11 place-items-center rounded-2xl transition-all duration-300 ${
+                  active
+                    ? "bg-primary text-primary-foreground scale-110 -translate-y-1.5 rotate-[-6deg] border-2 border-foreground shadow-[2px_3px_0_0_oklch(0.3_0.04_40)]"
+                    : "text-muted-foreground"
                 }`}
               >
                 <Icon className="h-5 w-5" />
               </div>
-              <span className={`text-[10px] font-medium ${active ? "text-primary" : "text-muted-foreground"}`}>
+              <span className={`text-[10px] font-bold ${active ? "text-primary" : "text-muted-foreground"}`}>
                 {t.label}
               </span>
             </button>
           );
         })}
       </nav>
+
     </main>
   );
 }
@@ -174,18 +178,18 @@ function HomeContent({
 
   return (
     <>
-      <article className="rounded-3xl bg-card p-5 shadow-sm ring-1 ring-border/60">
+      <article className="cartoon-card p-5 animate-slide-up">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Today's Kcal</p>
-            <p className="mt-1 text-3xl font-bold">
+            <p className="text-xs font-bold uppercase tracking-wider text-primary">🍽️ Today's Kcal</p>
+            <p className="mt-1 text-3xl font-extrabold">
               {Math.round(consumed)}
-              <span className="text-base font-medium text-muted-foreground"> / {target}</span>
+              <span className="text-base font-bold text-muted-foreground"> / {target}</span>
             </p>
           </div>
-          <div className="text-5xl animate-bop">{over ? "🙀" : "😺"}</div>
+          <div className="text-6xl animate-bop drop-shadow-[2px_3px_0_oklch(0.3_0.04_40_/_0.3)]">{over ? "🙀" : "😺"}</div>
         </div>
-        <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-secondary">
+        <div className="mt-4 h-4 w-full overflow-hidden rounded-full border-2 border-foreground bg-secondary">
           <div
             className="h-full rounded-full transition-all"
             style={{
@@ -196,57 +200,59 @@ function HomeContent({
             }}
           />
         </div>
-        <p className={`mt-3 text-sm font-medium ${over ? "text-destructive" : "text-primary"}`}>
-          {over ? "Over limit! Time for zoomies 🐾" : "You can still eat! 🍽️"}
+        <p className={`mt-3 text-sm font-bold ${over ? "text-destructive" : "text-primary"}`}>
+          {over ? "Over limit! Time for zoomies 🐾" : "You can still eat! 🍽️✨"}
         </p>
       </article>
 
-      <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Today's Meals
+      <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
+        🐟 Today's Meals
       </h2>
       {todayMeals.length === 0 ? (
-        <div className="grid place-items-center rounded-3xl bg-card p-6 text-center ring-1 ring-border/60">
-          <p className="text-3xl">🐈</p>
-          <p className="mt-2 text-sm text-muted-foreground">No meals planned yet for today.</p>
+        <div className="cartoon-card-soft grid place-items-center p-6 text-center">
+          <p className="text-4xl animate-float">🐈</p>
+          <p className="mt-2 text-sm font-semibold text-muted-foreground">No meals planned yet. Time to nap?</p>
         </div>
       ) : (
-        <ul className="space-y-2">
-          {todayMeals.map((m) => (
+        <ul className="space-y-2.5">
+          {todayMeals.map((m, i) => (
             <li
               key={m.id}
-              className="flex items-center gap-3 rounded-2xl bg-card p-3 ring-1 ring-border/60"
+              className="cartoon-card-soft flex items-center gap-3 p-3"
+              style={{ animation: `slide-up 0.4s ${i * 60}ms cubic-bezier(0.34,1.55,0.55,1) backwards` }}
             >
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent text-xl">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-accent text-2xl border-2 border-foreground/80">
                 {m.emoji}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold">{m.name}</p>
-                <p className="text-xs text-muted-foreground">{m.slotName}</p>
+                <p className="truncate text-sm font-bold">{m.name}</p>
+                <p className="text-xs font-semibold text-muted-foreground">{m.slotName}</p>
               </div>
-              <span className="text-sm font-medium text-primary">{m.kcal} kcal</span>
+              <span className="text-sm font-extrabold text-primary">{m.kcal} kcal</span>
             </li>
           ))}
         </ul>
       )}
 
-      <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Daily Journal
+      <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
+        📓 Daily Journal
       </h2>
-      <div className="rounded-3xl bg-card p-4 ring-1 ring-border/60">
-        <label className="text-base font-semibold">How are you feeling? 💭</label>
+      <div className="cartoon-card-soft p-4">
+        <label className="text-base font-extrabold">How are you feeling? 💭</label>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           onBlur={() => upsertJournal.mutate({ day_idx: day, text })}
           placeholder="Purr your thoughts here..."
-          className="mt-2 h-28 w-full resize-none rounded-2xl bg-secondary/60 p-3 text-sm outline-none ring-0 placeholder:text-muted-foreground focus:bg-secondary"
+          className="mt-2 h-28 w-full resize-none rounded-2xl border-2 border-foreground/40 bg-secondary/60 p-3 text-sm outline-none placeholder:text-muted-foreground focus:bg-secondary focus:border-primary"
         />
       </div>
 
-      <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Cat Scale Check-in
+      <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
+        🐾 Cat Scale Check-in
       </h2>
-      <div className="space-y-3 rounded-3xl bg-card p-4 ring-1 ring-border/60">
+      <div className="cartoon-card-soft space-y-4 p-4">
+
         <CatSlider
           label="Hunger"
           value={hunger}
@@ -287,9 +293,11 @@ function CatSlider({
 }) {
   return (
     <div>
-      <div className="mb-1.5 flex items-center justify-between">
-        <span className="text-sm font-medium">{label}</span>
-        <span className="text-2xl leading-none">{CAT_SCALE[value - 1]}</span>
+      <div className="mb-2 flex items-center justify-between">
+        <span className="text-sm font-bold">{label}</span>
+        <span key={value} className="text-3xl leading-none animate-pounce drop-shadow-[1px_2px_0_oklch(0.3_0.04_40_/_0.3)]">
+          {CAT_SCALE[value - 1]}
+        </span>
       </div>
       <input
         type="range"
@@ -298,11 +306,11 @@ function CatSlider({
         step={1}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-secondary accent-primary"
+        className="h-3 w-full cursor-pointer appearance-none rounded-full border-2 border-foreground/60 bg-secondary accent-primary"
       />
-      <div className="mt-1 flex justify-between px-0.5 text-xs">
+      <div className="mt-1 flex justify-between px-0.5 text-lg">
         {CAT_SCALE.map((c, i) => (
-          <span key={i} className={i + 1 === value ? "opacity-100" : "opacity-40"}>
+          <span key={i} className={i + 1 === value ? "opacity-100 scale-110" : "opacity-30"}>
             {c}
           </span>
         ))}
@@ -310,3 +318,4 @@ function CatSlider({
     </div>
   );
 }
+
