@@ -13,6 +13,8 @@ export type Recipe = {
   protein: number;
   fat: number;
   ingredients: Ingredient[];
+  steps: string[];
+  cover_url: string | null;
 };
 
 export type MealSlot = {
@@ -118,10 +120,40 @@ export function useCreateRecipe() {
         protein: recipe.protein,
         fat: recipe.fat,
         ingredients: recipe.ingredients as unknown as never,
+        steps: recipe.steps,
+        cover_url: recipe.cover_url,
       });
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["recipes"] }),
+  });
+}
+
+export function useUpdateRecipe() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, patch }: { id: string; patch: Partial<Omit<Recipe, "id">> }) => {
+      const { error } = await supabase
+        .from("recipes")
+        .update(patch as never)
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["recipes"] }),
+  });
+}
+
+export function useDeleteRecipe() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("recipes").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["recipes"] });
+      qc.invalidateQueries({ queryKey: ["meal_slots"] });
+    },
   });
 }
 

@@ -119,6 +119,7 @@ export type Database = {
         Row: {
           base_servings: number
           carbs: number
+          cover_url: string | null
           created_at: string
           emoji: string
           fat: number
@@ -126,12 +127,14 @@ export type Database = {
           ingredients: Json
           kcal: number
           protein: number
+          steps: string[]
           title: string
           user_id: string
         }
         Insert: {
           base_servings?: number
           carbs?: number
+          cover_url?: string | null
           created_at?: string
           emoji?: string
           fat?: number
@@ -139,12 +142,14 @@ export type Database = {
           ingredients?: Json
           kcal?: number
           protein?: number
+          steps?: string[]
           title: string
           user_id: string
         }
         Update: {
           base_servings?: number
           carbs?: number
+          cover_url?: string | null
           created_at?: string
           emoji?: string
           fat?: number
@@ -152,6 +157,7 @@ export type Database = {
           ingredients?: Json
           kcal?: number
           protein?: number
+          steps?: string[]
           title?: string
           user_id?: string
         }

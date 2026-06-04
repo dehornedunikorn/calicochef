@@ -124,8 +124,8 @@ function Index() {
               aria-label={t.label}
             >
               <div
-                className={`grid h-9 w-9 place-items-center rounded-full transition ${
-                  active ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+                className={`grid h-10 w-10 place-items-center rounded-2xl transition-all duration-300 ${
+                  active ? "bg-primary text-primary-foreground scale-110 shadow-md -translate-y-1 rotate-[-4deg]" : "text-muted-foreground"
                 }`}
               >
                 <Icon className="h-5 w-5" />
@@ -183,7 +183,7 @@ function HomeContent({
               <span className="text-base font-medium text-muted-foreground"> / {target}</span>
             </p>
           </div>
-          <div className="text-4xl">{over ? "🙀" : "😺"}</div>
+          <div className="text-5xl animate-bop">{over ? "🙀" : "😺"}</div>
         </div>
         <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-secondary">
           <div
