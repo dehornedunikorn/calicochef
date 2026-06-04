@@ -113,7 +113,7 @@ function Index() {
         )}
       </section>
 
-      <nav className="glass pointer-events-auto fixed inset-x-3 bottom-3 z-20 flex items-center justify-around rounded-full border border-white/40 px-2 py-2 shadow-lg">
+      <nav className="glass pointer-events-auto fixed inset-x-3 bottom-3 z-20 flex items-center justify-around rounded-full border-[2.5px] border-foreground px-2 py-2 shadow-[3px_4px_0_0_oklch(0.3_0.04_40)]">
         {tabs.map((t) => {
           const Icon = t.icon;
           const active = activeTab === t.id;
@@ -121,23 +121,26 @@ function Index() {
             <button
               key={t.id}
               onClick={() => setActiveTab(t.id)}
-              className="flex flex-1 flex-col items-center gap-0.5 py-1 transition active:scale-90"
+              className="press flex flex-1 flex-col items-center gap-0.5 py-1"
               aria-label={t.label}
             >
               <div
-                className={`grid h-10 w-10 place-items-center rounded-2xl transition-all duration-300 ${
-                  active ? "bg-primary text-primary-foreground scale-110 shadow-md -translate-y-1 rotate-[-4deg]" : "text-muted-foreground"
+                className={`grid h-11 w-11 place-items-center rounded-2xl transition-all duration-300 ${
+                  active
+                    ? "bg-primary text-primary-foreground scale-110 -translate-y-1.5 rotate-[-6deg] border-2 border-foreground shadow-[2px_3px_0_0_oklch(0.3_0.04_40)]"
+                    : "text-muted-foreground"
                 }`}
               >
                 <Icon className="h-5 w-5" />
               </div>
-              <span className={`text-[10px] font-medium ${active ? "text-primary" : "text-muted-foreground"}`}>
+              <span className={`text-[10px] font-bold ${active ? "text-primary" : "text-muted-foreground"}`}>
                 {t.label}
               </span>
             </button>
           );
         })}
       </nav>
+
     </main>
   );
 }
