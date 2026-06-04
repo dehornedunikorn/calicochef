@@ -120,10 +120,39 @@ export function useCreateRecipe() {
         protein: recipe.protein,
         fat: recipe.fat,
         ingredients: recipe.ingredients as unknown as never,
+        steps: recipe.steps,
+        cover_url: recipe.cover_url,
       });
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["recipes"] }),
+  });
+}
+
+export function useUpdateRecipe() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, patch }: { id: string; patch: Partial<Omit<Recipe, "id">> }) => {
+      const payload: Record<string, unknown> = { ...patch };
+      if (patch.ingredients) payload.ingredients = patch.ingredients as unknown;
+      const { error } = await supabase.from("recipes").update(payload).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["recipes"] }),
+  });
+}
+
+export function useDeleteRecipe() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("recipes").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["recipes"] });
+      qc.invalidateQueries({ queryKey: ["meal_slots"] });
+    },
   });
 }
 
