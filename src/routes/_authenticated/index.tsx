@@ -70,26 +70,27 @@ function Index() {
 
   return (
     <main className="flex h-full w-full flex-col bg-background text-foreground">
-      <header className="glass sticky top-0 z-20 flex items-center justify-between border-b border-border/40 px-4 py-3">
+      <header className="glass sticky top-0 z-20 flex items-center justify-between border-b-[2.5px] border-foreground/80 px-4 py-3 shadow-[0_3px_0_0_oklch(0.3_0.04_40_/_0.25)]">
         <button
           onClick={() => setDay((d) => (d - 1 + 7) % 7)}
-          className="grid h-10 w-10 place-items-center rounded-full bg-secondary text-foreground transition active:scale-90"
+          className="press grid h-11 w-11 place-items-center rounded-full bg-secondary cartoon-pill text-foreground"
           aria-label="Previous day"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
         <div className="flex flex-col items-center">
-          <span className="text-[11px] uppercase tracking-widest text-muted-foreground">Week {week}</span>
-          <span className="text-base font-semibold">🐱 {DAYS_FULL[day]}</span>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-primary">🐾 Week {week} 🐾</span>
+          <span className="text-lg font-extrabold">🐱 {DAYS_FULL[day]}</span>
         </div>
         <button
           onClick={() => setDay((d) => (d + 1) % 7)}
-          className="grid h-10 w-10 place-items-center rounded-full bg-secondary text-foreground transition active:scale-90"
+          className="press grid h-11 w-11 place-items-center rounded-full bg-secondary cartoon-pill text-foreground"
           aria-label="Next day"
         >
           <ChevronRight className="h-5 w-5" />
         </button>
       </header>
+
 
       <section className="hide-scrollbar flex-1 overflow-y-auto px-4 pb-28 pt-4">
         {activeTab === "recipes" ? (
