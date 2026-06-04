@@ -13,6 +13,8 @@ export type Recipe = {
   protein: number;
   fat: number;
   ingredients: Ingredient[];
+  steps: string[];
+  cover_url: string | null;
 };
 
 export type MealSlot = {
