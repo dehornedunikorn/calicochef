@@ -178,18 +178,18 @@ function HomeContent({
 
   return (
     <>
-      <article className="rounded-3xl bg-card p-5 shadow-sm ring-1 ring-border/60">
+      <article className="cartoon-card p-5 animate-slide-up">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Today's Kcal</p>
-            <p className="mt-1 text-3xl font-bold">
+            <p className="text-xs font-bold uppercase tracking-wider text-primary">🍽️ Today's Kcal</p>
+            <p className="mt-1 text-3xl font-extrabold">
               {Math.round(consumed)}
-              <span className="text-base font-medium text-muted-foreground"> / {target}</span>
+              <span className="text-base font-bold text-muted-foreground"> / {target}</span>
             </p>
           </div>
-          <div className="text-5xl animate-bop">{over ? "🙀" : "😺"}</div>
+          <div className="text-6xl animate-bop drop-shadow-[2px_3px_0_oklch(0.3_0.04_40_/_0.3)]">{over ? "🙀" : "😺"}</div>
         </div>
-        <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-secondary">
+        <div className="mt-4 h-4 w-full overflow-hidden rounded-full border-2 border-foreground bg-secondary">
           <div
             className="h-full rounded-full transition-all"
             style={{
@@ -200,57 +200,59 @@ function HomeContent({
             }}
           />
         </div>
-        <p className={`mt-3 text-sm font-medium ${over ? "text-destructive" : "text-primary"}`}>
-          {over ? "Over limit! Time for zoomies 🐾" : "You can still eat! 🍽️"}
+        <p className={`mt-3 text-sm font-bold ${over ? "text-destructive" : "text-primary"}`}>
+          {over ? "Over limit! Time for zoomies 🐾" : "You can still eat! 🍽️✨"}
         </p>
       </article>
 
-      <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Today's Meals
+      <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
+        🐟 Today's Meals
       </h2>
       {todayMeals.length === 0 ? (
-        <div className="grid place-items-center rounded-3xl bg-card p-6 text-center ring-1 ring-border/60">
-          <p className="text-3xl">🐈</p>
-          <p className="mt-2 text-sm text-muted-foreground">No meals planned yet for today.</p>
+        <div className="cartoon-card-soft grid place-items-center p-6 text-center">
+          <p className="text-4xl animate-float">🐈</p>
+          <p className="mt-2 text-sm font-semibold text-muted-foreground">No meals planned yet. Time to nap?</p>
         </div>
       ) : (
-        <ul className="space-y-2">
-          {todayMeals.map((m) => (
+        <ul className="space-y-2.5">
+          {todayMeals.map((m, i) => (
             <li
               key={m.id}
-              className="flex items-center gap-3 rounded-2xl bg-card p-3 ring-1 ring-border/60"
+              className="cartoon-card-soft flex items-center gap-3 p-3"
+              style={{ animation: `slide-up 0.4s ${i * 60}ms cubic-bezier(0.34,1.55,0.55,1) backwards` }}
             >
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent text-xl">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-accent text-2xl border-2 border-foreground/80">
                 {m.emoji}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold">{m.name}</p>
-                <p className="text-xs text-muted-foreground">{m.slotName}</p>
+                <p className="truncate text-sm font-bold">{m.name}</p>
+                <p className="text-xs font-semibold text-muted-foreground">{m.slotName}</p>
               </div>
-              <span className="text-sm font-medium text-primary">{m.kcal} kcal</span>
+              <span className="text-sm font-extrabold text-primary">{m.kcal} kcal</span>
             </li>
           ))}
         </ul>
       )}
 
-      <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Daily Journal
+      <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
+        📓 Daily Journal
       </h2>
-      <div className="rounded-3xl bg-card p-4 ring-1 ring-border/60">
-        <label className="text-base font-semibold">How are you feeling? 💭</label>
+      <div className="cartoon-card-soft p-4">
+        <label className="text-base font-extrabold">How are you feeling? 💭</label>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           onBlur={() => upsertJournal.mutate({ day_idx: day, text })}
           placeholder="Purr your thoughts here..."
-          className="mt-2 h-28 w-full resize-none rounded-2xl bg-secondary/60 p-3 text-sm outline-none ring-0 placeholder:text-muted-foreground focus:bg-secondary"
+          className="mt-2 h-28 w-full resize-none rounded-2xl border-2 border-foreground/40 bg-secondary/60 p-3 text-sm outline-none placeholder:text-muted-foreground focus:bg-secondary focus:border-primary"
         />
       </div>
 
-      <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Cat Scale Check-in
+      <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
+        🐾 Cat Scale Check-in
       </h2>
-      <div className="space-y-3 rounded-3xl bg-card p-4 ring-1 ring-border/60">
+      <div className="cartoon-card-soft space-y-4 p-4">
+
         <CatSlider
           label="Hunger"
           value={hunger}
