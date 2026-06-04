@@ -293,9 +293,11 @@ function CatSlider({
 }) {
   return (
     <div>
-      <div className="mb-1.5 flex items-center justify-between">
-        <span className="text-sm font-medium">{label}</span>
-        <span className="text-2xl leading-none">{CAT_SCALE[value - 1]}</span>
+      <div className="mb-2 flex items-center justify-between">
+        <span className="text-sm font-bold">{label}</span>
+        <span key={value} className="text-3xl leading-none animate-pounce drop-shadow-[1px_2px_0_oklch(0.3_0.04_40_/_0.3)]">
+          {CAT_SCALE[value - 1]}
+        </span>
       </div>
       <input
         type="range"
@@ -304,11 +306,11 @@ function CatSlider({
         step={1}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-secondary accent-primary"
+        className="h-3 w-full cursor-pointer appearance-none rounded-full border-2 border-foreground/60 bg-secondary accent-primary"
       />
-      <div className="mt-1 flex justify-between px-0.5 text-xs">
+      <div className="mt-1 flex justify-between px-0.5 text-lg">
         {CAT_SCALE.map((c, i) => (
-          <span key={i} className={i + 1 === value ? "opacity-100" : "opacity-40"}>
+          <span key={i} className={i + 1 === value ? "opacity-100 scale-110" : "opacity-30"}>
             {c}
           </span>
         ))}
@@ -316,3 +318,4 @@ function CatSlider({
     </div>
   );
 }
+
