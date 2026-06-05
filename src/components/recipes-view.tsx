@@ -9,6 +9,7 @@ import {
   type Ingredient,
 } from "@/lib/data-hooks";
 import { supabase } from "@/integrations/supabase/client";
+import { CalicoCat } from "@/components/calico";
 import { toast } from "sonner";
 
 const fmt = (n: number) => {

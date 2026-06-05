@@ -10,6 +10,7 @@ import {
   type MealSlot,
   type Recipe,
 } from "@/lib/data-hooks";
+import { CalicoCat } from "@/components/calico";
 
 const fmt = (n: number) => {
   const r = Math.round(n * 10) / 10;

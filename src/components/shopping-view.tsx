@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Check, Printer } from "lucide-react";
 import { useMealSlots, useRecipes } from "@/lib/data-hooks";
+import { CalicoCat } from "@/components/calico";
 
 const fmt = (n: number) => {
   const r = Math.round(n * 100) / 100;

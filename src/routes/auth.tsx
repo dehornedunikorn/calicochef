@@ -3,6 +3,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
+import { CalicoCat } from "@/components/calico";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
