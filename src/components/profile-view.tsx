@@ -38,8 +38,8 @@ export function ProfileView() {
   return (
     <>
       <article className="flex items-center gap-3 rounded-3xl bg-gradient-to-br from-accent to-card p-4 ring-1 ring-border/60">
-        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-primary text-3xl text-primary-foreground">
-          🐱
+        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-primary text-primary-foreground">
+          <CalicoCat variant="happy" size={56} />
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-base font-bold">{profile?.display_name ?? "Whiskers"}</p>
@@ -125,7 +125,7 @@ export function ProfileView() {
           <p className="text-sm font-semibold">Cat Mode</p>
           <p className="text-[11px] text-muted-foreground">Extra purrs, always on.</p>
         </div>
-        <span className="text-xl">😻</span>
+        <CalicoCat variant="love" size={36} />
       </article>
     </>
   );

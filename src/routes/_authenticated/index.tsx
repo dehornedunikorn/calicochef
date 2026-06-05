@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, Home, BookOpen, CalendarDays, ShoppingBasket
 import { RecipesView } from "@/components/recipes-view";
 import { PlannerView } from "@/components/planner-view";
 import { ShoppingView } from "@/components/shopping-view";
+import { CalicoCat, CALICO_SCALE } from "@/components/calico";
 import { ProfileView } from "@/components/profile-view";
 import {
   DAYS_FULL,
@@ -28,7 +29,7 @@ export const Route = createFileRoute("/_authenticated/")({
   component: Index,
 });
 
-const CAT_SCALE = ["😿", "🙀", "😼", "😺", "😻"];
+
 
 function Index() {
   const { data: profile } = useProfile();
@@ -80,7 +81,7 @@ function Index() {
         </button>
         <div className="flex flex-col items-center">
           <span className="text-[11px] font-bold uppercase tracking-widest text-primary">🐾 Week {week} 🐾</span>
-          <span className="text-lg font-extrabold">🐱 {DAYS_FULL[day]}</span>
+          <span className="flex items-center gap-1.5 text-lg font-extrabold"><CalicoCat variant="happy" size={28} /> {DAYS_FULL[day]}</span>
         </div>
         <button
           onClick={() => setDay((d) => (d + 1) % 7)}
@@ -187,7 +188,7 @@ function HomeContent({
               <span className="text-base font-bold text-muted-foreground"> / {target}</span>
             </p>
           </div>
-          <div className="text-6xl animate-bop drop-shadow-[2px_3px_0_oklch(0.3_0.04_40_/_0.3)]">{over ? "🙀" : "😺"}</div>
+          <div className="animate-bop"><CalicoCat variant={over ? "shocked" : "happy"} size={72} /></div>
         </div>
         <div className="mt-4 h-4 w-full overflow-hidden rounded-full border-2 border-foreground bg-secondary">
           <div
@@ -210,7 +211,7 @@ function HomeContent({
       </h2>
       {todayMeals.length === 0 ? (
         <div className="cartoon-card-soft grid place-items-center p-6 text-center">
-          <p className="text-4xl animate-float">🐈</p>
+          <div className="animate-float"><CalicoCat variant="sleepy" size={72} /></div>
           <p className="mt-2 text-sm font-semibold text-muted-foreground">No meals planned yet. Time to nap?</p>
         </div>
       ) : (
@@ -295,8 +296,8 @@ function CatSlider({
     <div>
       <div className="mb-2 flex items-center justify-between">
         <span className="text-sm font-bold">{label}</span>
-        <span key={value} className="text-3xl leading-none animate-pounce drop-shadow-[1px_2px_0_oklch(0.3_0.04_40_/_0.3)]">
-          {CAT_SCALE[value - 1]}
+        <span key={value} className="animate-pounce">
+          <CalicoCat variant={CALICO_SCALE[value - 1]} size={44} />
         </span>
       </div>
       <input
@@ -308,10 +309,10 @@ function CatSlider({
         onChange={(e) => onChange(Number(e.target.value))}
         className="h-3 w-full cursor-pointer appearance-none rounded-full border-2 border-foreground/60 bg-secondary accent-primary"
       />
-      <div className="mt-1 flex justify-between px-0.5 text-lg">
-        {CAT_SCALE.map((c, i) => (
+      <div className="mt-1 flex justify-between px-0.5">
+        {CALICO_SCALE.map((c, i) => (
           <span key={i} className={i + 1 === value ? "opacity-100 scale-110" : "opacity-30"}>
-            {c}
+            <CalicoCat variant={c} size={28} />
           </span>
         ))}
       </div>

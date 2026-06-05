@@ -68,8 +68,8 @@ function AuthPage() {
     <main className="flex h-full w-full flex-col items-center justify-center bg-background px-6 py-8 text-foreground">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 grid h-20 w-20 place-items-center rounded-[2rem] bg-primary text-5xl text-primary-foreground shadow-lg">
-            🐱
+          <div className="mx-auto mb-3 grid h-24 w-24 place-items-center rounded-[2rem] bg-primary text-primary-foreground shadow-lg">
+            <CalicoCat variant="happy" size={88} />
           </div>
           <h1 className="text-3xl font-bold">Calico</h1>
           <p className="mt-1 text-sm text-muted-foreground">Your cozy meal companion</p>

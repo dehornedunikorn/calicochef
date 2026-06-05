@@ -67,7 +67,7 @@ export function RecipesView() {
         <p className="text-center text-sm text-muted-foreground">Loading cookbook…</p>
       ) : recipes.length === 0 ? (
         <div className="grid place-items-center rounded-3xl bg-card p-8 text-center ring-1 ring-border/60">
-          <p className="text-5xl animate-bounce">🐱</p>
+          <div className="animate-bounce"><CalicoCat variant="smirk" size={88} /></div>
           <p className="mt-2 text-sm text-muted-foreground">No recipes yet — tap above to add one!</p>
         </div>
       ) : (
