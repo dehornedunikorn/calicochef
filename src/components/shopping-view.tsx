@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Check, Printer } from "lucide-react";
 import { useMealSlots, useRecipes } from "@/lib/data-hooks";
+import { CalicoCat } from "@/components/calico";
 
 const fmt = (n: number) => {
   const r = Math.round(n * 100) / 100;
@@ -60,7 +61,7 @@ export function ShoppingView() {
 
       {items.length === 0 ? (
         <div className="grid place-items-center rounded-3xl bg-card p-8 text-center ring-1 ring-border/60">
-          <p className="text-4xl">🐈</p>
+          <CalicoCat variant="sleepy" size={80} />
           <p className="mt-2 text-sm text-muted-foreground">No meals planned yet. Head to the Planner!</p>
         </div>
       ) : (

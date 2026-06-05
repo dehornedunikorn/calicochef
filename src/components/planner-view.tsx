@@ -10,6 +10,7 @@ import {
   type MealSlot,
   type Recipe,
 } from "@/lib/data-hooks";
+import { CalicoCat } from "@/components/calico";
 
 const fmt = (n: number) => {
   const r = Math.round(n * 10) / 10;
@@ -76,7 +77,7 @@ export function PlannerView() {
               <span className="text-sm font-medium text-muted-foreground"> / {dailyTarget} kcal</span>
             </p>
           </div>
-          <div className="text-3xl">{over ? "🙀" : "😺"}</div>
+          <CalicoCat variant={over ? "shocked" : "happy"} size={48} />
         </div>
         <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-secondary">
           <div
