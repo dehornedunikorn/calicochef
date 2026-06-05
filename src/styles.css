@@ -154,15 +154,32 @@
     overscroll-behavior: none;
     font-family: "Fredoka", "Quicksand", ui-rounded, "Comic Sans MS", system-ui, sans-serif;
     background-image:
-      radial-gradient(circle at 8% 12%, oklch(0.78 0.16 45 / 0.22) 0 10px, transparent 11px),
-      radial-gradient(circle at 6% 9%, oklch(0.78 0.16 45 / 0.22) 0 4px, transparent 5px),
-      radial-gradient(circle at 10% 9%, oklch(0.78 0.16 45 / 0.22) 0 4px, transparent 5px),
-      radial-gradient(circle at 88% 72%, oklch(0.3 0.04 40 / 0.14) 0 10px, transparent 11px),
-      radial-gradient(circle at 86% 69%, oklch(0.3 0.04 40 / 0.14) 0 4px, transparent 5px),
-      radial-gradient(circle at 90% 69%, oklch(0.3 0.04 40 / 0.14) 0 4px, transparent 5px),
-      radial-gradient(circle at 22% 55%, oklch(0.85 0.12 80 / 0.18) 0 24px, transparent 25px),
-      radial-gradient(circle at 78% 28%, oklch(0.9 0.08 60 / 0.25) 0 28px, transparent 29px);
+      /* Calico spots — irregular organic blobs using elliptical radial gradients */
+      radial-gradient(ellipse 180px 140px at 12% 8%, oklch(0.78 0.16 50 / 0.32) 0%, transparent 65%),
+      radial-gradient(ellipse 120px 160px at 88% 18%, oklch(0.32 0.04 40 / 0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 200px 130px at 95% 55%, oklch(0.78 0.16 50 / 0.28) 0%, transparent 60%),
+      radial-gradient(ellipse 150px 180px at 5% 62%, oklch(0.32 0.04 40 / 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 220px 160px at 70% 92%, oklch(0.85 0.13 75 / 0.32) 0%, transparent 60%),
+      radial-gradient(ellipse 140px 110px at 25% 35%, oklch(0.91 0.08 65 / 0.35) 0%, transparent 65%),
+      radial-gradient(ellipse 170px 140px at 50% 78%, oklch(0.78 0.16 50 / 0.18) 0%, transparent 60%);
     background-attachment: fixed;
+  }
+
+  /* Floating paw prints sprinkled on top — subtle */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 18% 88%, oklch(0.32 0.04 40 / 0.12) 0 6px, transparent 7px),
+      radial-gradient(circle at 16% 85%, oklch(0.32 0.04 40 / 0.12) 0 3px, transparent 4px),
+      radial-gradient(circle at 20% 85%, oklch(0.32 0.04 40 / 0.12) 0 3px, transparent 4px),
+      radial-gradient(circle at 82% 32%, oklch(0.78 0.16 50 / 0.18) 0 6px, transparent 7px),
+      radial-gradient(circle at 80% 29%, oklch(0.78 0.16 50 / 0.18) 0 3px, transparent 4px),
+      radial-gradient(circle at 84% 29%, oklch(0.78 0.16 50 / 0.18) 0 3px, transparent 4px);
+    animation: float-y 8s ease-in-out infinite;
   }
 
   html, body, #root {
@@ -174,9 +191,9 @@
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 .glass {
-  background: color-mix(in oklab, white 80%, transparent);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: color-mix(in oklab, oklch(0.995 0.012 80) 65%, transparent);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
 }
 
 /* Chunky cartoon card: thick border + offset shadow */
@@ -185,18 +202,32 @@
   box-shadow: 4px 5px 0 0 oklch(0.3 0.04 40);
   border-radius: 1.75rem;
   background: var(--color-card);
+  position: relative;
+  z-index: 1;
 }
 .cartoon-card-soft {
   border: 2px solid oklch(0.3 0.04 40 / 0.55);
   box-shadow: 3px 4px 0 0 oklch(0.3 0.04 40 / 0.35);
   border-radius: 1.5rem;
   background: var(--color-card);
+  position: relative;
+  z-index: 1;
 }
 .cartoon-pill {
   border: 2px solid oklch(0.3 0.04 40);
   box-shadow: 2px 3px 0 0 oklch(0.3 0.04 40);
   border-radius: 9999px;
+  transition: transform 0.18s cubic-bezier(0.34, 1.55, 0.55, 1), box-shadow 0.18s ease;
 }
+.cartoon-pill:hover {
+  transform: translate(-1px, -2px) rotate(-2deg);
+  box-shadow: 3px 5px 0 0 oklch(0.3 0.04 40);
+}
+.cartoon-pill:active {
+  transform: translate(1px, 2px) scale(0.95);
+  box-shadow: 1px 1px 0 0 oklch(0.3 0.04 40);
+}
+
 
 @keyframes slide-up {
   from { transform: translateY(100%); }
