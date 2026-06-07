@@ -95,6 +95,7 @@ export function RecipesView() {
         </div>
       )}
 
+      {discover && <ExternalRecipesPanel onClose={() => setDiscover(false)} />}
       {open && <Cookbook recipe={open} onClose={() => setOpen(null)} />}
       {creating && (
         <RecipeEditor
