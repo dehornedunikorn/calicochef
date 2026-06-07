@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Minus, Plus, X, Pencil, Trash2, ImagePlus, BookPlus, Loader2 } from "lucide-react";
+import { Minus, Plus, X, Pencil, Trash2, ImagePlus, BookPlus, Loader2, Search } from "lucide-react";
 import {
   useRecipes,
   useCreateRecipe,
@@ -10,6 +10,7 @@ import {
 } from "@/lib/data-hooks";
 import { supabase } from "@/integrations/supabase/client";
 import { CalicoCat } from "@/components/calico";
+import { ExternalRecipesPanel } from "@/components/external-recipes";
 import { toast } from "sonner";
 
 const fmt = (n: number) => {
