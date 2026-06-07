@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Minus, Plus, X, Pencil, Trash2, ImagePlus, BookPlus, Loader2 } from "lucide-react";
+import { Minus, Plus, X, Pencil, Trash2, ImagePlus, BookPlus, Loader2, Search } from "lucide-react";
 import {
   useRecipes,
   useCreateRecipe,
@@ -10,6 +10,7 @@ import {
 } from "@/lib/data-hooks";
 import { supabase } from "@/integrations/supabase/client";
 import { CalicoCat } from "@/components/calico";
+import { ExternalRecipesPanel } from "@/components/external-recipes";
 import { toast } from "sonner";
 
 const fmt = (n: number) => {
@@ -50,16 +51,26 @@ export function RecipesView() {
   const [open, setOpen] = useState<Recipe | null>(null);
   const [editing, setEditing] = useState<Recipe | null>(null);
   const [creating, setCreating] = useState(false);
+  const [discover, setDiscover] = useState(false);
 
   return (
     <>
-      <button
-        onClick={() => setCreating(true)}
-        className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-br from-primary to-accent-foreground/80 py-4 text-sm font-bold text-primary-foreground shadow-lg ring-1 ring-primary/30 transition active:scale-95 hover:scale-[1.01]"
-      >
-        <BookPlus className="h-5 w-5" />
-        Write a new recipe 🐾
-      </button>
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          onClick={() => setCreating(true)}
+          className="flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-br from-primary to-accent-foreground/80 py-4 text-sm font-bold text-primary-foreground shadow-lg ring-1 ring-primary/30 transition active:scale-95 hover:scale-[1.01]"
+        >
+          <BookPlus className="h-5 w-5" />
+          New recipe
+        </button>
+        <button
+          onClick={() => setDiscover(true)}
+          className="flex items-center justify-center gap-2 rounded-3xl bg-card py-4 text-sm font-bold ring-1 ring-border shadow-sm transition active:scale-95 hover:-translate-y-0.5"
+        >
+          <Search className="h-5 w-5 text-primary" />
+          Discover 🐾
+        </button>
+      </div>
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         My Cookbook
@@ -84,6 +95,7 @@ export function RecipesView() {
         </div>
       )}
 
+      {discover && <ExternalRecipesPanel onClose={() => setDiscover(false)} />}
       {open && <Cookbook recipe={open} onClose={() => setOpen(null)} />}
       {creating && (
         <RecipeEditor
