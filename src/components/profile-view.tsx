@@ -129,6 +129,29 @@ export function ProfileView() {
         </div>
         <CalicoCat variant="love" size={36} />
       </article>
+
+      <a
+        href="https://paypal.me/dehornedunikorn"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-3 flex items-center gap-3 rounded-3xl bg-card p-4 ring-1 ring-border/60 transition active:scale-95"
+      >
+        <div className="grid h-11 w-11 place-items-center rounded-2xl bg-accent text-lg">
+          ✌️
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-semibold">Buy Catnip to the Creator</p>
+          <p className="text-[11px] text-muted-foreground">Support the app with a treat!</p>
+        </div>
+        <img
+          src={catnipShaker}
+          alt="Catnip shaker"
+          width={44}
+          height={44}
+          className="animate-shaker h-11 w-11 object-contain"
+          loading="lazy"
+        />
+      </a>
     </>
   );
 }
