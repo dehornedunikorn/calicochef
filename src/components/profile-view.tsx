@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Activity, Cat, LogOut, Coffee } from "lucide-react";
+import { Activity, Cat, LogOut } from "lucide-react";
 import { CalicoCat } from "@/components/calico";
 import { useProfile, useUpdateProfile } from "@/lib/data-hooks";
 import { supabase } from "@/integrations/supabase/client";
