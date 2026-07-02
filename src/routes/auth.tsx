@@ -15,7 +15,16 @@ export const Route = createFileRoute("/auth")({
     meta: [
       { title: "Sign in — Calico" },
       { name: "description", content: "Sign in to Calico to start tracking your cozy meals." },
+      { property: "og:title", content: "Sign in — Calico" },
+      { property: "og:description", content: "Sign in to Calico to start tracking your cozy meals." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://calicochef.lovable.app/auth" },
+      { property: "og:site_name", content: "Calico" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Sign in — Calico" },
+      { name: "twitter:description", content: "Sign in to Calico to start tracking your cozy meals." },
     ],
+    links: [{ rel: "canonical", href: "https://calicochef.lovable.app/auth" }],
   }),
   component: AuthPage,
 });
