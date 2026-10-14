@@ -199,7 +199,7 @@ function useSignedCover(path: string | null, setSrc: (s: string | null) => void)
 }
 
 function Cookbook({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) {
-  const [servings, setServings] = useState(recipe.base_servings);
+  const [servings, setAdagok] = useState(recipe.base_servings);
   const mult = servings / recipe.base_servings;
   const [coverSrc, setCoverSrc] = useState<string | null>(null);
   useSignedCover(recipe.cover_url, setCoverSrc);
@@ -229,13 +229,13 @@ function Cookbook({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) 
 
         <div className="hide-scrollbar flex-1 overflow-y-auto px-5 pb-8">
           <div className="mt-2 flex items-center justify-between rounded-2xl bg-secondary/60 p-3">
-            <span className="text-sm font-semibold">Servings</span>
+            <span className="text-sm font-semibold">Adagok</span>
             <div className="flex items-center gap-3">
-              <button onClick={() => setServings((s) => Math.max(1, s - 1))} className="grid h-9 w-9 place-items-center rounded-full bg-card ring-1 ring-border active:scale-90" aria-label="Decrease">
+              <button onClick={() => setAdagok((s) => Math.max(1, s - 1))} className="grid h-9 w-9 place-items-center rounded-full bg-card ring-1 ring-border active:scale-90" aria-label="Decrease">
                 <Minus className="h-4 w-4" />
               </button>
               <span className="w-6 text-center text-lg font-bold tabular-nums">{servings}</span>
-              <button onClick={() => setServings((s) => Math.min(20, s + 1))} className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground active:scale-90" aria-label="Increase">
+              <button onClick={() => setAdagok((s) => Math.min(20, s + 1))} className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground active:scale-90" aria-label="Increase">
                 <Plus className="h-4 w-4" />
               </button>
             </div>
@@ -269,7 +269,7 @@ function Cookbook({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) 
 
           {recipe.steps && recipe.steps.length > 0 && (
             <>
-              <h3 className="mt-5 mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Steps</h3>
+              <h3 className="mt-5 mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Elkészítés lépései</h3>
               <ol className="space-y-2">
                 {recipe.steps.filter((s) => s.trim()).map((s, i) => (
                   <li key={i} className="flex gap-3 rounded-2xl bg-secondary/40 p-3">
@@ -371,7 +371,7 @@ function RecipeEditor({
         <div className="hide-scrollbar flex-1 overflow-y-auto px-5 py-4 space-y-4">
           {/* Cover */}
           <div>
-            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cover photo (optional)</label>
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Borítókép (nem kötelező)</label>
             <button
               onClick={() => fileRef.current?.click()}
               disabled={uploading}
@@ -382,21 +382,21 @@ function RecipeEditor({
               ) : (
                 <div className="flex flex-col items-center text-muted-foreground">
                   {uploading ? <Loader2 className="h-6 w-6 animate-spin" /> : <ImagePlus className="h-7 w-7" />}
-                  <span className="mt-1 text-xs">{uploading ? "Uploading…" : "Tap to add a photo"}</span>
+                  <span className="mt-1 text-xs">{uploading ? "Feltöltés…" : "Koppints fotó hozzáadásához"}</span>
                 </div>
               )}
             </button>
             {d.cover_url && (
               <button onClick={() => setField("cover_url", null)} className="mt-1 text-xs text-muted-foreground underline">
-                Remove photo
+                Fotó eltávolítása
               </button>
             )}
             <input ref={fileRef} type="file" accept="image/*" hidden onChange={handleCover} />
           </div>
 
-          {/* Title + emoji */}
+          {/* Recept neve + emoji */}
           <div>
-            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Title</label>
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Recept neve</label>
             <input
               value={d.title}
               onChange={(e) => setField("title", e.target.value)}
@@ -406,7 +406,7 @@ function RecipeEditor({
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Emoji</label>
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ikon</label>
             <div className="flex flex-wrap gap-1.5">
               {EMOJI_OPTIONS.map((e) => (
                 <button
@@ -420,7 +420,7 @@ function RecipeEditor({
             </div>
           </div>
 
-          {/* Servings + macros */}
+          {/* Adagok + macros */}
           <div className="grid grid-cols-5 gap-2">
             {[
               { k: "base_servings", l: "Serv" },
@@ -480,14 +480,14 @@ function RecipeEditor({
                 onClick={() => setD((p) => ({ ...p, ingredients: [...p.ingredients, { name: "", amount: 0, unit: "g" }] }))}
                 className="w-full rounded-xl border-2 border-dashed border-border py-2 text-xs font-medium text-muted-foreground active:scale-95"
               >
-                + Add ingredient
+                + Hozzávaló hozzáadása
               </button>
             </div>
           </div>
 
-          {/* Steps */}
+          {/* Elkészítés lépései */}
           <div>
-            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Steps</label>
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Elkészítés lépései</label>
             <div className="space-y-2">
               {d.steps.map((s, i) => (
                 <div key={i} className="flex gap-2">
@@ -512,7 +512,7 @@ function RecipeEditor({
                 onClick={() => setD((p) => ({ ...p, steps: [...p.steps, ""] }))}
                 className="w-full rounded-xl border-2 border-dashed border-border py-2 text-xs font-medium text-muted-foreground active:scale-95"
               >
-                + Add step
+                + Lépés hozzáadása
               </button>
             </div>
           </div>
