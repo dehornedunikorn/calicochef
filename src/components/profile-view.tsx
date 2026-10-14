@@ -11,7 +11,7 @@ export function ProfileView() {
   const updateProfile = useUpdateProfile();
   const navigate = useNavigate();
   const [target, setTarget] = useState<number>(profile?.target_kcal ?? 2000);
-  const [synced, setSynced] = useState(false);
+  const [synced, setSzinkronizálásed] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
@@ -45,26 +45,26 @@ export function ProfileView() {
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-base font-bold">{profile?.display_name ?? "Whiskers"}</p>
-          <p className="text-xs text-muted-foreground">Cozy meal explorer · Week 12</p>
+          <p className="text-xs text-muted-foreground">Személyes étrendtervező</p>
         </div>
         <button
           onClick={handleSignOut}
           className="grid h-10 w-10 place-items-center rounded-full bg-card ring-1 ring-border active:scale-90"
-          aria-label="Sign out"
+          aria-label="Kijelentkezés"
         >
           <LogOut className="h-4 w-4" />
         </button>
       </article>
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Daily Goal
+        Napi cél
       </h2>
       <article className="rounded-3xl bg-card p-4 ring-1 ring-border/60">
         <label htmlFor="kcal-target" className="text-sm font-semibold">
-          Daily Target Kcal
+          Napi kalóriacél
         </label>
         <p className="mt-0.5 text-[11px] text-muted-foreground">
-          Used by your tracker and meal percentages.
+          Ezt használja a napi áttekintő és az étkezések arányának számítása.
         </p>
         <div className="mt-3 flex items-center gap-2">
           <input
@@ -96,7 +96,7 @@ export function ProfileView() {
       </article>
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Integrations
+        Integrációk
       </h2>
       <article className="rounded-3xl bg-card p-4 ring-1 ring-border/60">
         <div className="flex items-center gap-3">
@@ -106,7 +106,7 @@ export function ProfileView() {
           <div className="flex-1">
             <p className="text-sm font-semibold">Google Fit</p>
             <p className="text-[11px] text-muted-foreground">
-              {synced ? "Connected! 🐾" : "Sync activity and calories burned."}
+              {synced ? "Connected! 🐾" : "Aktivitás és elégetett kalória szinkronizálása."}
             </p>
           </div>
           <button
@@ -114,7 +114,7 @@ export function ProfileView() {
             disabled={syncing}
             className="rounded-full bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground active:scale-95 disabled:opacity-50"
           >
-            {syncing ? "Syncing…" : synced ? "Synced ✓" : "Sync"}
+            {syncing ? "Szinkronizálás…" : synced ? "Szinkronizálva ✓" : "Sync"}
           </button>
         </div>
       </article>
@@ -124,8 +124,8 @@ export function ProfileView() {
           <Cat className="h-5 w-5 text-primary" />
         </div>
         <div className="flex-1">
-          <p className="text-sm font-semibold">Cat Mode</p>
-          <p className="text-[11px] text-muted-foreground">Extra purrs, always on.</p>
+          <p className="text-sm font-semibold">Cica mód</p>
+          <p className="text-[11px] text-muted-foreground">Mindig egy kis extra dorombolás.</p>
         </div>
         <CalicoCat variant="love" size={36} />
       </article>
@@ -140,8 +140,8 @@ export function ProfileView() {
           ✌️
         </div>
         <div className="flex-1">
-          <p className="text-sm font-semibold">Buy Catnip to the Creator</p>
-          <p className="text-[11px] text-muted-foreground">Support the app with a treat!</p>
+          <p className="text-sm font-semibold">Támogasd a készítőt</p>
+          <p className="text-[11px] text-muted-foreground">Támogasd az alkalmazás fejlesztését!</p>
         </div>
         <img
           src={catnipShaker}
