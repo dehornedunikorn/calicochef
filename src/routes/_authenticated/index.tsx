@@ -78,7 +78,7 @@ function Index() {
         ? {
             id: s.id,
             name: r.title,
-            kcal: Math.round((r.kcal * (s.servings ?? 0)) / r.base_servings),
+            kcal: r.base_servings > 0 ? Math.round((r.kcal * (s.servings ?? 0)) / r.base_servings) : 0,
             emoji: r.emoji,
             slotName: s.name,
           }
@@ -214,7 +214,7 @@ function HomeContent({
       <article className="cartoon-card p-5 animate-slide-up">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-primary">🍽️ Mai kalóriabevitel</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-primary">🍽️ Napi kalóriabevitel</p>
             <p className="mt-1 text-3xl font-extrabold">
               {Math.round(consumed)}
               <span className="text-base font-bold text-muted-foreground"> / {target}</span>
@@ -255,7 +255,7 @@ function HomeContent({
       </section>
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
-        🐟 Mai étkezések
+        🐟 Napi étkezések
       </h2>
       {todayMeals.length === 0 ? (
         <div className="cartoon-card-soft grid place-items-center p-6 text-center">
