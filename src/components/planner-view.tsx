@@ -45,7 +45,7 @@ export function PlannerView() {
       .reduce((s, m) => s + mealKcal(m, recipes), 0);
     const remainingDaily = dailyTarget - otherKcal;
     const target = Math.min(budget, Math.max(0, remainingDaily));
-    const perServing = r.kcal / r.base_servings;
+    const perServing = r.base_servings > 0 ? r.kcal / r.base_servings : 0;
     const newServings = Math.max(0.1, Math.round((target / perServing) * 10) / 10);
     updateSlot.mutate({ id: slot.id, patch: { servings: newServings } });
   };
