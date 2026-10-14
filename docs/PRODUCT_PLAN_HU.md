@@ -46,8 +46,11 @@ A meglévő komponenseket és adatbázissémát fokozatosan kell fejleszteni, ki
 
 ### D. Személyes profil és célok
 - Napi kalóriacél kézi beállítása.
-- Következő lépésként opcionális profiladatok és átlátható célbecslés.
-- A felhasználó bármikor módosíthassa a javasolt célt.
+- Opcionális életkor-, magasság-, testsúly- és számításhoz használt nem mezők.
+- Aktivitási szint és cél (fogyás, súlytartás, súlygyarapítás) kiválasztása.
+- Átlátható, Mifflin–St Jeor alapú becslés; a becsült célt a felhasználó módosíthatja mentés előtt.
+- Opcionális fehérje-, szénhidrát- és zsírcélok.
+- A profiladatok új, visszafelé kompatibilis adatbázismezőkbe kerülnek.
 - A rendszer ne adjon szélsőséges vagy egészségügyileg kockázatos fogyási tanácsot.
 - Külső aktivitásintegráció csak tényleges működés esetén jelenjen meg csatlakoztatottként.
 
@@ -58,7 +61,7 @@ A meglévő komponenseket és adatbázissémát fokozatosan kell fejleszteni, ki
 
 ## 4. Későbbi fejlesztések
 
-- Fehérje-, szénhidrát- és zsírcélok beállítása és napi haladásuk megjelenítése.
+- A beállított fehérje-, szénhidrát- és zsírcélok napi haladásának megjelenítése.
 - Többnapos étrendjavaslat a felhasználó preferenciái és kizárásai alapján.
 - Étkezési preferenciák és allergének kezelése, figyelmeztetésekkel.
 - Havi áttekintő és trendek.
@@ -91,9 +94,10 @@ A meglévő komponenseket és adatbázissémát fokozatosan kell fejleszteni, ki
 3. Napi kalória- és makróösszesítés.
 4. Recept- és étrendtervező felület finomítása.
 5. Bevásárlólista mentésének és állapotainak megbízhatóvá tétele.
-6. Profil és célbeállítások fejlesztése.
+6. Profil és célbeállítások (alapmezők és kalóriabecslés elkészült; mentés és adatbázis-migráció ellenőrzése szükséges).
 7. Mobilos, jogosultsági és hibakezelési ellenőrzések.
-8. Csak ezután új, nagyobb funkciók bevezetése.
+8. Build/lint ellenőrzés és az esetleges hibák javítása.
+9. Csak ezután új, nagyobb funkciók bevezetése.
 
 ## 8. Elfogadási kritériumok az első fejlesztési körhöz
 
