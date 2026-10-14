@@ -46,8 +46,6 @@ function Index() {
   const { data: recipes = [] } = useRecipes();
 
   const [day, setDay] = useState(0);
-  const week = 12;
-
   const target = profile?.target_kcal ?? 2000;
   const todaySlots = slots.filter((s) => s.day_idx === day);
   const consumed = todaySlots.reduce((sum, s) => sum + mealKcal(s, recipes), 0);
