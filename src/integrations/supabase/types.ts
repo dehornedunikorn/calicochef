@@ -117,25 +117,52 @@ export type Database = {
       }
       profiles: {
         Row: {
+          activity_level: string
+          age_years: number | null
           created_at: string
           display_name: string | null
+          goal_type: string
+          height_cm: number | null
           id: string
+          sex: string | null
+          target_carbs_g: number | null
+          target_fat_g: number | null
           target_kcal: number
+          target_protein_g: number | null
           updated_at: string
+          weight_kg: number | null
         }
         Insert: {
+          activity_level?: string
+          age_years?: number | null
           created_at?: string
           display_name?: string | null
+          goal_type?: string
+          height_cm?: number | null
           id: string
+          sex?: string | null
+          target_carbs_g?: number | null
+          target_fat_g?: number | null
           target_kcal?: number
+          target_protein_g?: number | null
           updated_at?: string
+          weight_kg?: number | null
         }
         Update: {
+          activity_level?: string
+          age_years?: number | null
           created_at?: string
           display_name?: string | null
+          goal_type?: string
+          height_cm?: number | null
           id?: string
+          sex?: string | null
+          target_carbs_g?: number | null
+          target_fat_g?: number | null
           target_kcal?: number
+          target_protein_g?: number | null
           updated_at?: string
+          weight_kg?: number | null
         }
         Relationships: []
       }
