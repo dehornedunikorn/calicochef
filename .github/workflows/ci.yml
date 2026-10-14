@@ -25,4 +25,4 @@ jobs:
           SUPABASE_URL: https://example.supabase.co
           SUPABASE_PUBLISHABLE_KEY: test-publishable-key
       - name: ESLint (excluding repository-wide Prettier formatting baseline)
-        run: bunx eslint . --rule 'prettier/prettier: off'
+        run: "bunx eslint . --rule 'prettier/prettier: off'"
