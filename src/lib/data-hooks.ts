@@ -43,15 +43,15 @@ export type Journal = {
   productivity: number;
 };
 
-export const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+export const DAYS = ["H", "K", "Sze", "Cs", "P", "Szo", "V"];
 export const DAYS_FULL = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
+  "Hétfő",
+  "Kedd",
+  "Szerda",
+  "Csütörtök",
+  "Péntek",
+  "Szombat",
+  "Vasárnap",
 ];
 
 // ---------- PROFILE ----------
