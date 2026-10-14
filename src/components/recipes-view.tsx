@@ -23,7 +23,7 @@ const EMOJI_OPTIONS = ["🐟", "🥑", "🥗", "🍝", "🍜", "🍛", "🥘", "
 type RecipeDraft = {
   title: string;
   emoji: string;
-  base_servings: number;
+  base_adagings: number;
   kcal: number;
   carbs: number;
   protein: number;
@@ -36,7 +36,7 @@ type RecipeDraft = {
 const emptyDraft = (): RecipeDraft => ({
   title: "",
   emoji: "🐟",
-  base_servings: 1,
+  base_adagings: 1,
   kcal: 0,
   carbs: 0,
   protein: 0,
@@ -61,26 +61,26 @@ export function RecipesView() {
           className="flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-br from-primary to-accent-foreground/80 py-4 text-sm font-bold text-primary-foreground shadow-lg ring-1 ring-primary/30 transition active:scale-95 hover:scale-[1.01]"
         >
           <BookPlus className="h-5 w-5" />
-          New recipe
+          Új recept
         </button>
         <button
           onClick={() => setDiscover(true)}
           className="flex items-center justify-center gap-2 rounded-3xl bg-card py-4 text-sm font-bold ring-1 ring-border shadow-sm transition active:scale-95 hover:-translate-y-0.5"
         >
           <Search className="h-5 w-5 text-primary" />
-          Discover 🐾
+          Receptkereső 🐾
         </button>
       </div>
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        My Cookbook
+        Saját receptjeim
       </h2>
       {isLoading ? (
-        <p className="text-center text-sm text-muted-foreground">Loading cookbook…</p>
+        <p className="text-center text-sm text-muted-foreground">Receptek betöltése…</p>
       ) : recipes.length === 0 ? (
         <div className="grid place-items-center rounded-3xl bg-card p-8 text-center ring-1 ring-border/60">
           <div className="animate-bounce"><CalicoCat variant="smirk" size={88} /></div>
-          <p className="mt-2 text-sm text-muted-foreground">No recipes yet — tap above to add one!</p>
+          <p className="mt-2 text-sm text-muted-foreground">Még nincs recepted – a fenti gombbal hozzáadhatsz egyet!</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-3">
@@ -100,7 +100,7 @@ export function RecipesView() {
       {creating && (
         <RecipeEditor
           initial={emptyDraft()}
-          title="New recipe"
+          title="Új recept"
           onClose={() => setCreating(false)}
         />
       )}
@@ -109,7 +109,7 @@ export function RecipesView() {
           initial={{
             title: editing.title,
             emoji: editing.emoji,
-            base_servings: editing.base_servings,
+            base_adagings: editing.base_adagings,
             kcal: editing.kcal,
             carbs: editing.carbs,
             protein: editing.protein,
@@ -119,7 +119,7 @@ export function RecipesView() {
             cover_url: editing.cover_url,
           }}
           recipeId={editing.id}
-          title="Edit recipe"
+          title="Recept szerkesztése"
           onClose={() => setEditing(null)}
         />
       )}
@@ -142,10 +142,10 @@ function RecipeCard({
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!confirm(`Delete "${recipe.title}"?`)) return;
+    if (!confirm(`Törlöd ezt a receptet: "${recipe.title}"?`)) return;
     del.mutate(recipe.id, {
-      onSuccess: () => toast.success("Recipe deleted 🐾"),
-      onError: (err) => toast.error(err instanceof Error ? err.message : "Delete failed"),
+      onSuccess: () => toast.success("Recept törölve 🐾"),
+      onError: (err) => toast.error(err instanceof Error ? err.message : "A törlés nem sikerült"),
     });
   };
 
@@ -163,7 +163,7 @@ function RecipeCard({
         <div className="mt-1 flex items-center gap-1 text-[11px] text-muted-foreground">
           <span className="font-medium text-primary">{recipe.kcal}</span> kcal
           <span>·</span>
-          <span>{recipe.base_servings} serv</span>
+          <span>{recipe.base_adagings} adag</span>
         </div>
       </button>
       <div className="absolute right-2 top-2 flex gap-1 opacity-90">
@@ -199,8 +199,8 @@ function useSignedCover(path: string | null, setSrc: (s: string | null) => void)
 }
 
 function Cookbook({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) {
-  const [servings, setServings] = useState(recipe.base_servings);
-  const mult = servings / recipe.base_servings;
+  const [adagings, setServings] = useState(recipe.base_adagings);
+  const mult = adagings / recipe.base_adagings;
   const [coverSrc, setCoverSrc] = useState<string | null>(null);
   useSignedCover(recipe.cover_url, setCoverSrc);
 
@@ -222,7 +222,7 @@ function Cookbook({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) 
             </div>
             <div className="min-w-0">
               <h2 className="text-lg font-bold leading-tight truncate">{recipe.title}</h2>
-              <p className="text-xs text-muted-foreground">Cookbook · base {recipe.base_servings} serv</p>
+              <p className="text-xs text-muted-foreground">Recept · alapadag: {recipe.base_adagings} adag</p>
             </div>
           </div>
         </div>
@@ -234,7 +234,7 @@ function Cookbook({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) 
               <button onClick={() => setServings((s) => Math.max(1, s - 1))} className="grid h-9 w-9 place-items-center rounded-full bg-card ring-1 ring-border active:scale-90" aria-label="Decrease">
                 <Minus className="h-4 w-4" />
               </button>
-              <span className="w-6 text-center text-lg font-bold tabular-nums">{servings}</span>
+              <span className="w-6 text-center text-lg font-bold tabular-nums">{adagings}</span>
               <button onClick={() => setServings((s) => Math.min(20, s + 1))} className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground active:scale-90" aria-label="Increase">
                 <Plus className="h-4 w-4" />
               </button>
@@ -255,7 +255,7 @@ function Cookbook({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) 
             ))}
           </div>
 
-          <h3 className="mt-5 mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Ingredients</h3>
+          <h3 className="mt-5 mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Hozzávalók</h3>
           <ul className="space-y-1.5">
             {recipe.ingredients.map((ing, i) => (
               <li key={`${ing.name}-${i}`} className="flex items-center justify-between rounded-2xl bg-secondary/40 px-3 py-2.5">
@@ -339,7 +339,7 @@ function RecipeEditor({
     const payload: Omit<Recipe, "id"> = {
       ...d,
       title: d.title.trim(),
-      base_servings: Math.max(1, d.base_servings || 1),
+      base_adagings: Math.max(1, d.base_adagings || 1),
       ingredients: d.ingredients.filter((i) => i.name.trim()),
       steps: d.steps.filter((s) => s.trim()),
     };
@@ -423,7 +423,7 @@ function RecipeEditor({
           {/* Servings + macros */}
           <div className="grid grid-cols-5 gap-2">
             {[
-              { k: "base_servings", l: "Serv" },
+              { k: "base_adagings", l: "Serv" },
               { k: "kcal", l: "Kcal" },
               { k: "carbs", l: "Carbs" },
               { k: "protein", l: "Protein" },
@@ -442,9 +442,9 @@ function RecipeEditor({
             ))}
           </div>
 
-          {/* Ingredients */}
+          {/* Hozzávalók */}
           <div>
-            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ingredients</label>
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Hozzávalók</label>
             <div className="space-y-2">
               {d.ingredients.map((ing, i) => (
                 <div key={i} className="flex gap-1.5">
@@ -524,7 +524,7 @@ function RecipeEditor({
             disabled={busy || uploading}
             className="w-full rounded-full bg-primary py-3 text-sm font-bold text-primary-foreground shadow-lg active:scale-95 disabled:opacity-50"
           >
-            {busy ? "Saving…" : recipeId ? "Save changes 🐾" : "Save recipe 🐾"}
+            {busy ? "Saving…" : recipeId ? "Módosítások mentése 🐾" : "Recept mentése 🐾"}
           </button>
         </div>
       </div>
