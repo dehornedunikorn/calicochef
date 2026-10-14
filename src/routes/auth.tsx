@@ -82,7 +82,7 @@ function AuthPage() {
             <CalicoCat variant="happy" size={88} />
           </div>
           <h1 className="text-3xl font-bold">Calico</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Your cozy meal companion</p>
+          <p className="mt-1 text-sm text-muted-foreground">A személyes étrendterveződ</p>
         </div>
 
         <button
@@ -91,12 +91,12 @@ function AuthPage() {
           className="flex w-full items-center justify-center gap-2 rounded-2xl bg-card px-4 py-3 text-sm font-semibold ring-1 ring-border transition active:scale-[0.98] disabled:opacity-60"
         >
           <GoogleIcon />
-          Continue with Google
+          Folytatás Google-fiókkal
         </button>
 
         <div className="my-5 flex items-center gap-3 text-[11px] uppercase tracking-wider text-muted-foreground">
           <div className="h-px flex-1 bg-border" />
-          or email
+          vagy e-mail-cím
           <div className="h-px flex-1 bg-border" />
         </div>
 
