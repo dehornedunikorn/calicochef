@@ -19,10 +19,10 @@ import {
 export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
-      { title: "Calico — your cozy meal companion" },
+      { title: "CalicoChef – személyes étrendtervező" },
       {
         name: "description",
-        content: "Track meals, mood, and macros with a cute cat-themed daily planner.",
+        content: "Személyre szabható étrendtervező receptekkel, kalória- és makrószámítással.",
       },
       { property: "og:title", content: "Calico — your cozy meal companion" },
       { property: "og:description", content: "Track meals, mood, and macros with a cute cat-themed daily planner." },
@@ -71,11 +71,11 @@ function Index() {
 
   const [activeTab, setActiveTab] = useState("home");
   const tabs = [
-    { id: "home", icon: Home, label: "Home" },
-    { id: "recipes", icon: BookOpen, label: "Recipes" },
-    { id: "planner", icon: CalendarDays, label: "Planner" },
-    { id: "shopping", icon: ShoppingBasket, label: "Shopping" },
-    { id: "profile", icon: Cat, label: "Profile" },
+    { id: "home", icon: Home, label: "Áttekintés" },
+    { id: "recipes", icon: BookOpen, label: "Receptek" },
+    { id: "planner", icon: CalendarDays, label: "Étrend" },
+    { id: "shopping", icon: ShoppingBasket, label: "Bevásárlás" },
+    { id: "profile", icon: Cat, label: "Profil" },
   ];
 
   return (
@@ -84,18 +84,18 @@ function Index() {
         <button
           onClick={() => setDay((d) => (d - 1 + 7) % 7)}
           className="press grid h-11 w-11 place-items-center rounded-full bg-secondary cartoon-pill text-foreground"
-          aria-label="Previous day"
+          aria-label="Előző nap"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
         <div className="flex flex-col items-center">
-          <span className="text-[11px] font-bold uppercase tracking-widest text-primary">🐾 Week {week} 🐾</span>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-primary">🐾 Heti étrend 🐾</span>
           <span className="flex items-center gap-1.5 text-lg font-extrabold"><CalicoCat variant="happy" size={28} /> {DAYS_FULL[day]}</span>
         </div>
         <button
           onClick={() => setDay((d) => (d + 1) % 7)}
           className="press grid h-11 w-11 place-items-center rounded-full bg-secondary cartoon-pill text-foreground"
-          aria-label="Next day"
+          aria-label="Következő nap"
         >
           <ChevronRight className="h-5 w-5" />
         </button>
@@ -191,7 +191,7 @@ function HomeContent({
       <article className="cartoon-card p-5 animate-slide-up">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-primary">🍽️ Today's Kcal</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-primary">🍽️ Mai kalóriabevitel</p>
             <p className="mt-1 text-3xl font-extrabold">
               {Math.round(consumed)}
               <span className="text-base font-bold text-muted-foreground"> / {target}</span>
@@ -211,17 +211,17 @@ function HomeContent({
           />
         </div>
         <p className={`mt-3 text-sm font-bold ${over ? "text-destructive" : "text-primary"}`}>
-          {over ? "Over limit! Time for zoomies 🐾" : "You can still eat! 🍽️✨"}
+          {over ? "A napi cél fölött vagy. Nézd át a tervet." : "Még belefér egy étkezés 🍽️✨"}
         </p>
       </article>
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
-        🐟 Today's Meals
+        🐟 Mai étkezések
       </h2>
       {todayMeals.length === 0 ? (
         <div className="cartoon-card-soft grid place-items-center p-6 text-center">
           <div className="animate-float"><CalicoCat variant="sleepy" size={72} /></div>
-          <p className="mt-2 text-sm font-semibold text-muted-foreground">No meals planned yet. Time to nap?</p>
+          <p className="mt-2 text-sm font-semibold text-muted-foreground">Még nincs étkezés a mai napra. Tervezd meg az étrended!</p>
         </div>
       ) : (
         <ul className="space-y-2.5">
@@ -245,26 +245,26 @@ function HomeContent({
       )}
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
-        📓 Daily Journal
+        📓 Napi napló
       </h2>
       <div className="cartoon-card-soft p-4">
-        <label className="text-base font-extrabold">How are you feeling? 💭</label>
+        <label className="text-base font-extrabold">Hogy érzed magad ma? 💭</label>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           onBlur={() => upsertJournal.mutate({ day_idx: day, text })}
-          placeholder="Purr your thoughts here..."
+          placeholder="Írd ide a gondolataidat…"
           className="mt-2 h-28 w-full resize-none rounded-2xl border-2 border-foreground/40 bg-secondary/60 p-3 text-sm outline-none placeholder:text-muted-foreground focus:bg-secondary focus:border-primary"
         />
       </div>
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
-        🐾 Cat Scale Check-in
+        🐾 Napi állapotfelmérés
       </h2>
       <div className="cartoon-card-soft space-y-4 p-4">
 
         <CatSlider
-          label="Hunger"
+          label="Éhségérzet"
           value={hunger}
           onChange={(v) => {
             setHunger(v);
@@ -272,7 +272,7 @@ function HomeContent({
           }}
         />
         <CatSlider
-          label="Mood"
+          label="Hangulat"
           value={mood}
           onChange={(v) => {
             setMood(v);
@@ -280,7 +280,7 @@ function HomeContent({
           }}
         />
         <CatSlider
-          label="Productivity"
+          label="Energia / aktivitás"
           value={productivity}
           onChange={(v) => {
             setProductivity(v);
