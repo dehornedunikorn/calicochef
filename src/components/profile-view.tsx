@@ -86,6 +86,10 @@ export function ProfileView() {
     const maintenance = bmr * activityFactors[activity];
     const adjusted = maintenance + (goal === "lose" ? -300 : goal === "gain" ? 250 : 0);
     const rounded = Math.round(adjusted / 50) * 50;
+    if (rounded < 500 || rounded > 6000) {
+      setNotice("A becslés a beállítható 500–6000 kcal tartományon kívül esik. Ellenőrizd az adatokat, vagy kérj személyre szabott szakmai tanácsot.");
+      return;
+    }
     setTarget(String(rounded));
     setNotice(`Becsült napi cél: ${rounded} kcal. Ez kiinduló becslés, szükség szerint módosítsd.`);
   };
@@ -102,8 +106,8 @@ export function ProfileView() {
     const proteinValue = numberOrNull(protein);
     const carbsValue = numberOrNull(carbs);
     const fatValue = numberOrNull(fat);
-    if (ageValue != null && (ageValue < 18 || ageValue > 100)) {
-      setNotice("Az életkor 18 és 100 év közötti legyen.");
+    if (ageValue != null && (!Number.isInteger(ageValue) || ageValue < 18 || ageValue > 100)) {
+      setNotice("Az életkor egész szám legyen 18 és 100 év között.");
       return;
     }
     if (heightValue != null && (heightValue < 100 || heightValue > 250)) {
@@ -114,8 +118,12 @@ export function ProfileView() {
       setNotice("A testsúly 30 és 350 kg közötti legyen.");
       return;
     }
-    if ([proteinValue, carbsValue, fatValue].some((v) => v != null && v < 0)) {
-      setNotice("A makrócélok nem lehetnek negatívak.");
+    if (
+      (proteinValue != null && (proteinValue < 0 || proteinValue > 500)) ||
+      (carbsValue != null && (carbsValue < 0 || carbsValue > 1000)) ||
+      (fatValue != null && (fatValue < 0 || fatValue > 500))
+    ) {
+      setNotice("A makrócélok megengedett tartománya: fehérje 0–500 g, szénhidrát 0–1000 g, zsír 0–500 g.");
       return;
     }
 
