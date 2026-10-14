@@ -40,9 +40,9 @@ export function ShoppingView() {
       <article className="rounded-3xl bg-gradient-to-br from-accent to-card p-4 ring-1 ring-border/60">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">This Week</p>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">Ezen a héten</p>
             <p className="mt-0.5 text-xl font-bold">
-              {remaining} <span className="text-sm font-medium text-muted-foreground">items to grab 🛒</span>
+              {remaining} <span className="text-sm font-medium text-muted-foreground">beszerzendő tétel 🛒</span>
             </p>
           </div>
           <button
@@ -50,19 +50,19 @@ export function ShoppingView() {
             className="flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground active:scale-95"
           >
             <Printer className="h-3.5 w-3.5" />
-            Print / PDF
+            Nyomtatás / PDF
           </button>
         </div>
       </article>
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Shopping List
+        Bevásárlólista
       </h2>
 
       {items.length === 0 ? (
         <div className="grid place-items-center rounded-3xl bg-card p-8 text-center ring-1 ring-border/60">
           <CalicoCat variant="sleepy" size={80} />
-          <p className="mt-2 text-sm text-muted-foreground">No meals planned yet. Head to the Planner!</p>
+          <p className="mt-2 text-sm text-muted-foreground">Még nincs megtervezett étkezés. Lépj az Étrend menübe!</p>
         </div>
       ) : (
         <ul className="space-y-2">
