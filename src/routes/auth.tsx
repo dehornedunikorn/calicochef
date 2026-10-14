@@ -13,16 +13,16 @@ export const Route = createFileRoute("/auth")({
   },
   head: () => ({
     meta: [
-      { title: "Sign in — Calico" },
-      { name: "description", content: "Sign in to Calico to start tracking your cozy meals." },
-      { property: "og:title", content: "Sign in — Calico" },
-      { property: "og:description", content: "Sign in to Calico to start tracking your cozy meals." },
+      { title: "Bejelentkezés – CalicoChef" },
+      { name: "description", content: "Jelentkezz be a CalicoChef étrendtervező használatához." },
+      { property: "og:title", content: "Bejelentkezés – CalicoChef" },
+      { property: "og:description", content: "Jelentkezz be a CalicoChef étrendtervező használatához." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://calicochef.lovable.app/auth" },
       { property: "og:site_name", content: "Calico" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Sign in — Calico" },
-      { name: "twitter:description", content: "Sign in to Calico to start tracking your cozy meals." },
+      { name: "twitter:title", content: "Bejelentkezés – CalicoChef" },
+      { name: "twitter:description", content: "Jelentkezz be a CalicoChef étrendtervező használatához." },
     ],
     links: [{ rel: "canonical", href: "https://calicochef.lovable.app/auth" }],
   }),
@@ -42,7 +42,7 @@ function AuthPage() {
       redirect_uri: window.location.origin,
     });
     if (result.error) {
-      toast.error(result.error.message || "Sign-in failed");
+      toast.error(result.error.message || "A bejelentkezés nem sikerült");
       setLoading(false);
       return;
     }
@@ -61,14 +61,14 @@ function AuthPage() {
           options: { emailRedirectTo: window.location.origin },
         });
         if (error) throw error;
-        toast.success("Check your inbox to confirm your email 🐾");
+        toast.success("A regisztráció megerősítéséhez ellenőrizd az e-mail-fiókodat 🐾");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         navigate({ to: "/", replace: true });
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Something went wrong");
+      toast.error(err instanceof Error ? err.message : "Hiba történt");
     } finally {
       setLoading(false);
     }
@@ -81,7 +81,7 @@ function AuthPage() {
           <div className="mx-auto mb-3 grid h-24 w-24 place-items-center rounded-[2rem] bg-primary text-primary-foreground shadow-lg">
             <CalicoCat variant="happy" size={88} />
           </div>
-          <h1 className="text-3xl font-bold">Calico</h1>
+          <h1 className="text-3xl font-bold">CalicoChef</h1>
           <p className="mt-1 text-sm text-muted-foreground">A személyes étrendterveződ</p>
         </div>
 
@@ -104,7 +104,7 @@ function AuthPage() {
           <input
             type="email"
             required
-            placeholder="you@example.com"
+            placeholder="email@pelda.hu"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full rounded-2xl bg-secondary/60 px-4 py-3 text-sm outline-none focus:bg-secondary"
@@ -113,7 +113,7 @@ function AuthPage() {
             type="password"
             required
             minLength={6}
-            placeholder="Password"
+            placeholder="Jelszó"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full rounded-2xl bg-secondary/60 px-4 py-3 text-sm outline-none focus:bg-secondary"
@@ -123,7 +123,7 @@ function AuthPage() {
             disabled={loading}
             className="w-full rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground transition active:scale-[0.98] disabled:opacity-60"
           >
-            {loading ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
+            {loading ? "Egy pillanat…" : mode === "signin" ? "Bejelentkezés" : "Fiók létrehozása"}
           </button>
         </form>
 
