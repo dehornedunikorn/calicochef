@@ -268,8 +268,8 @@ export function useUpsertJournal() {
 }
 
 export function mealKcal(slot: MealSlot, recipes: Recipe[]): number {
-  if (!slot.recipe_id || !slot.servings) return 0;
+  if (!slot.recipe_id || !slot.servings || slot.servings <= 0) return 0;
   const r = recipes.find((x) => x.id === slot.recipe_id);
-  if (!r) return 0;
+  if (!r || r.base_servings <= 0) return 0;
   return (r.kcal * slot.servings) / r.base_servings;
 }
