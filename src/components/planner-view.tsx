@@ -93,7 +93,7 @@ export function PlannerView() {
         {over && (
           <div className="mt-3 flex items-center gap-2 rounded-2xl bg-destructive/10 px-3 py-2 text-xs font-medium text-destructive">
             <AlertTriangle className="h-4 w-4 shrink-0" />
-            Over target! Time for zoomies 🐾
+            A napi cél fölött vagy.
           </div>
         )}
         {totalPct !== 100 && (
@@ -152,7 +152,7 @@ export function PlannerView() {
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold">{recipe.title}</p>
                     <p className="text-[11px] text-muted-foreground">
-                      <span className="tabular-nums">{fmt(slot.servings ?? 1)}×</span> servings ·{" "}
+                      <span className="tabular-nums">{fmt(slot.servings ?? 1)}×</span> adag ·{" "}
                       <span className="text-primary">{fmt(kcal)} kcal</span>
                     </p>
                   </div>
@@ -233,7 +233,7 @@ function RecipePicker({
               </div>
               <p className="mt-2 line-clamp-2 text-xs font-semibold leading-snug">{r.title}</p>
               <p className="mt-0.5 text-[10px] text-muted-foreground">
-                <span className="text-primary">{r.kcal}</span> kcal · {r.base_servings} serv
+                <span className="text-primary">{r.kcal}</span> kcal · {r.base_servings} adag
               </p>
             </button>
           ))}
