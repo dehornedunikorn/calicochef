@@ -53,6 +53,20 @@ function Index() {
   const consumed = todaySlots.reduce((sum, s) => sum + mealKcal(s, recipes), 0);
   const pct = Math.min(100, (consumed / target) * 100);
   const over = consumed > target;
+  const todayMacros = todaySlots.reduce(
+    (sum, slot) => {
+      const recipe = recipes.find((item) => item.id === slot.recipe_id);
+      const servings = slot.servings ?? 0;
+      if (!recipe || recipe.base_servings <= 0 || servings <= 0) return sum;
+      const factor = servings / recipe.base_servings;
+      return {
+        protein: sum.protein + recipe.protein * factor,
+        carbs: sum.carbs + recipe.carbs * factor,
+        fat: sum.fat + recipe.fat * factor,
+      };
+    },
+    { protein: 0, carbs: 0, fat: 0 },
+  );
 
   const todayMeals = todaySlots
     .map((s) => {
@@ -118,6 +132,7 @@ function Index() {
             target={target}
             pct={pct}
             over={over}
+            todayMacros={todayMacros}
             todayMeals={todayMeals}
           />
         )}
@@ -161,6 +176,7 @@ function HomeContent({
   target,
   pct,
   over,
+  todayMacros,
   todayMeals,
 }: {
   day: number;
@@ -168,6 +184,7 @@ function HomeContent({
   target: number;
   pct: number;
   over: boolean;
+  todayMacros: { protein: number; carbs: number; fat: number };
   todayMeals: { id: string; name: string; kcal: number; emoji: string; slotName: string }[];
 }) {
   const { data: journal } = useJournal(day);
@@ -214,6 +231,20 @@ function HomeContent({
           {over ? "A napi cél fölött vagy. Nézd át a tervet." : "Még belefér egy étkezés 🍽️✨"}
         </p>
       </article>
+
+      <section className="mt-4 grid grid-cols-3 gap-2" aria-label="Napi makrotápanyagok">
+        {[
+          { label: "Fehérje", value: todayMacros.protein, unit: "g", emoji: "🥚" },
+          { label: "Szénhidrát", value: todayMacros.carbs, unit: "g", emoji: "🍞" },
+          { label: "Zsír", value: todayMacros.fat, unit: "g", emoji: "🥑" },
+        ].map((macro) => (
+          <article key={macro.label} className="cartoon-card-soft p-3 text-center">
+            <p className="text-lg" aria-hidden="true">{macro.emoji}</p>
+            <p className="mt-1 text-lg font-extrabold tabular-nums">{Math.round(macro.value)} <span className="text-xs">g</span></p>
+            <p className="text-[11px] font-semibold text-muted-foreground">{macro.label}</p>
+          </article>
+        ))}
+      </section>
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-extrabold uppercase tracking-wider text-foreground/70">
         🐟 Mai étkezések
