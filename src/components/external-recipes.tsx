@@ -3,7 +3,7 @@ import { Search, X, Heart, Loader2, ChefHat, Clock, Flame, Filter } from "lucide
 import { CalicoCat } from "@/components/calico";
 import {
   useExternalRecipe,
-  useFavorites,
+  useKedvencek,
   useSearchExternal,
   useToggleFavorite,
   hasAnyFilter,
@@ -67,12 +67,12 @@ export function ExternalRecipesPanel({ onClose }: { onClose: () => void }) {
           <button onClick={onClose} className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-secondary" aria-label="Close">
             <X className="h-4 w-4" />
           </button>
-          <h2 className="text-lg font-bold">Discover recipes 🐾</h2>
+          <h2 className="text-lg font-bold">Receptek felfedezése 🐾</h2>
           <div className="mt-3 flex gap-1.5 rounded-full bg-secondary/60 p-1">
             <TabBtn active={tab === "search"} onClick={() => setTab("search")}>Search</TabBtn>
             <TabBtn active={tab === "favorites"} onClick={() => setTab("favorites")}>
               <Heart className="h-3.5 w-3.5 inline -mt-0.5 mr-1 fill-current" />
-              Favorites
+              Kedvencek
             </TabBtn>
           </div>
         </div>
@@ -135,7 +135,7 @@ export function ExternalRecipesPanel({ onClose }: { onClose: () => void }) {
                       onClick={() => setFilters(EMPTY_FILTERS)}
                       className="text-xs text-muted-foreground underline"
                     >
-                      Clear all filters
+                      Szűrők törlése
                     </button>
                   )}
                 </div>
@@ -180,7 +180,7 @@ export function ExternalRecipesPanel({ onClose }: { onClose: () => void }) {
                     >
                       {search.isFetchingNextPage ? (
                         <span className="inline-flex items-center gap-2">
-                          <Loader2 className="h-4 w-4 animate-spin" /> Loading more…
+                          <Loader2 className="h-4 w-4 animate-spin" /> További receptek betöltése…
                         </span>
                       ) : (
                         "Load more"
@@ -192,7 +192,7 @@ export function ExternalRecipesPanel({ onClose }: { onClose: () => void }) {
             </div>
           </>
         ) : (
-          <FavoritesPanel onOpen={(id) => setDetailId(id)} />
+          <KedvencekPanel onOpen={(id) => setDetailId(id)} />
         )}
       </div>
 
@@ -234,7 +234,7 @@ function FilterSelect({
 }
 
 function ResultCard({ recipe, onOpen }: { recipe: ExternalRecipe; onOpen: () => void }) {
-  const { data: favs } = useFavorites();
+  const { data: favs } = useKedvencek();
   const toggle = useToggleFavorite();
   const favorited = !!favs?.some((f) => f.recipe_id === recipe.id);
   const art = recipeArt(recipe);
@@ -293,8 +293,8 @@ function ResultCard({ recipe, onOpen }: { recipe: ExternalRecipe; onOpen: () => 
   );
 }
 
-function FavoritesPanel({ onOpen }: { onOpen: (id: number) => void }) {
-  const { data: favs = [], isLoading } = useFavorites();
+function KedvencekPanel({ onOpen }: { onOpen: (id: number) => void }) {
+  const { data: favs = [], isLoading } = useKedvencek();
   return (
     <div className="hide-scrollbar flex-1 overflow-y-auto px-5 pb-8 pt-3">
       {isLoading ? (
@@ -317,7 +317,7 @@ function FavoritesPanel({ onOpen }: { onOpen: (id: number) => void }) {
 }
 
 function RecipeDetail({ id, onClose }: { id: number; onClose: () => void }) {
-  const { data: favs } = useFavorites();
+  const { data: favs } = useKedvencek();
   const { data, isLoading, isError, error, refetch } = useExternalRecipe(id);
   const toggle = useToggleFavorite();
   const favorited = !!favs?.some((f) => f.recipe_id === id);
@@ -389,7 +389,7 @@ function RecipeDetail({ id, onClose }: { id: number; onClose: () => void }) {
                   <li key={`${ing.id}-${i}`} className="flex items-center justify-between rounded-2xl bg-secondary/40 px-3 py-2.5">
                     <span className="text-sm">
                       {ing.name}
-                      {ing.optional && <span className="ml-1 text-[10px] text-muted-foreground">(optional)</span>}
+                      {ing.optional && <span className="ml-1 text-[10px] text-muted-foreground">(nem kötelező)</span>}
                     </span>
                     {ing.quantity != null && (
                       <span className="text-sm font-semibold tabular-nums text-primary">
