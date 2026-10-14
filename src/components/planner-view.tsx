@@ -32,7 +32,7 @@ export function PlannerView() {
   const over = totalKcal > dailyTarget;
 
   const assignRecipe = (slotId: string, recipe: Recipe) => {
-    updateSlot.mutate({ id: slotId, patch: { recipe_id: recipe.id, servings: recipe.base_servings } });
+    updateSlot.mutate({ id: slotId, patch: { recipe_id: recipe.id, adagings: recipe.base_servings } });
     setPicker(null);
   };
 
@@ -71,7 +71,7 @@ export function PlannerView() {
       <article className="mt-4 rounded-3xl bg-card p-4 ring-1 ring-border/60">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Planned Total</p>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">Tervezett összesen</p>
             <p className="mt-1 text-2xl font-bold">
               {fmt(totalKcal)}
               <span className="text-sm font-medium text-muted-foreground"> / {dailyTarget} kcal</span>
@@ -98,13 +98,13 @@ export function PlannerView() {
         )}
         {totalPct !== 100 && (
           <p className="mt-2 text-[11px] text-muted-foreground">
-            Meal percentages sum to {totalPct}% (target 100%).
+            Az étkezések százalékai összesen {totalPct}% (cél: 100%).
           </p>
         )}
       </article>
 
       <h2 className="mt-6 mb-3 px-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        {DAYS[dayIdx]}'s Meals
+        {DAYS[dayIdx]} étkezései
       </h2>
       <ul className="space-y-2.5">
         {daySlots.map((slot) => {
@@ -162,12 +162,12 @@ export function PlannerView() {
                     aria-label="Smart scale"
                   >
                     <Sparkles className="h-3 w-3" />
-                    Smart Scale
+                    Adag igazítása
                   </button>
                   <button
                     onClick={() => updateSlot.mutate({ id: slot.id, patch: { recipe_id: null, servings: null } })}
                     className="grid h-7 w-7 place-items-center rounded-full bg-card ring-1 ring-border active:scale-90"
-                    aria-label="Remove recipe"
+                    aria-label="Recept eltávolítása"
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
@@ -178,7 +178,7 @@ export function PlannerView() {
                   className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-2xl border border-dashed border-border bg-secondary/30 py-2.5 text-xs font-medium text-muted-foreground active:scale-95"
                 >
                   <Plus className="h-3.5 w-3.5" />
-                  Assign recipe
+                  Recept hozzáadása
                 </button>
               )}
             </li>
@@ -218,8 +218,8 @@ function RecipePicker({
           >
             <X className="h-4 w-4" />
           </button>
-          <h3 className="text-lg font-bold">Pick a recipe</h3>
-          <p className="text-xs text-muted-foreground">Choose what to assign to this meal 🐾</p>
+          <h3 className="text-lg font-bold">Válassz receptet</h3>
+          <p className="text-xs text-muted-foreground">Válaszd ki az ehhez az étkezéshez tartozó receptet 🐾</p>
         </div>
         <div className="hide-scrollbar grid flex-1 grid-cols-2 gap-3 overflow-y-auto px-5 pb-8 pt-2">
           {recipes.map((r) => (
