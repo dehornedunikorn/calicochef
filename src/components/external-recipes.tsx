@@ -3,7 +3,7 @@ import { Search, X, Heart, Loader2, ChefHat, Clock, Flame, Filter } from "lucide
 import { CalicoCat } from "@/components/calico";
 import {
   useExternalRecipe,
-  useKedvencek,
+  useFavorites,
   useSearchExternal,
   useToggleFavorite,
   hasAnyFilter,
@@ -234,7 +234,7 @@ function FilterSelect({
 }
 
 function ResultCard({ recipe, onOpen }: { recipe: ExternalRecipe; onOpen: () => void }) {
-  const { data: favs } = useKedvencek();
+  const { data: favs } = useFavorites();
   const toggle = useToggleFavorite();
   const favorited = !!favs?.some((f) => f.recipe_id === recipe.id);
   const art = recipeArt(recipe);
@@ -294,7 +294,7 @@ function ResultCard({ recipe, onOpen }: { recipe: ExternalRecipe; onOpen: () => 
 }
 
 function KedvencekPanel({ onOpen }: { onOpen: (id: number) => void }) {
-  const { data: favs = [], isLoading } = useKedvencek();
+  const { data: favs = [], isLoading } = useFavorites();
   return (
     <div className="hide-scrollbar flex-1 overflow-y-auto px-5 pb-8 pt-3">
       {isLoading ? (
@@ -317,7 +317,7 @@ function KedvencekPanel({ onOpen }: { onOpen: (id: number) => void }) {
 }
 
 function RecipeDetail({ id, onClose }: { id: number; onClose: () => void }) {
-  const { data: favs } = useKedvencek();
+  const { data: favs } = useFavorites();
   const { data, isLoading, isError, error, refetch } = useExternalRecipe(id);
   const toggle = useToggleFavorite();
   const favorited = !!favs?.some((f) => f.recipe_id === id);
