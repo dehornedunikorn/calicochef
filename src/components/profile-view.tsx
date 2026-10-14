@@ -23,15 +23,6 @@ export function ProfileView() {
     updateProfile.mutate({ target_kcal: n });
   };
 
-  const handleSync = () => {
-    setSyncing(true);
-    setTimeout(() => {
-      setSyncing(false);
-      setSynced(true);
-      setTimeout(() => setSynced(false), 2200);
-    }, 1200);
-  };
-
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
