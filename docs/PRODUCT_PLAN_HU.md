@@ -1,217 +1,105 @@
-# Háztartási étkezéstervező – termék- és fejlesztési terv
+# CalicoChef – személyes étrendtervező
 
-> Munkanév: **CalicoChef** (a projekt elnevezése később módosítható)  
-> Állapot: tervezési alapdokumentum  
-> Fő cél: a háztartás étkezéseinek közös, előre tervezhető megszervezése – nem fitness- vagy kalóriaszámláló alkalmazás.
+> Állapot: aktív fejlesztési alap  
+> Termékirány: személyre szabható heti étrend, receptek, kalória- és makrótápanyag-követés.  
+> Első cél: a jelenlegi React + TypeScript + Supabase alkalmazás továbbfejlesztése, nem az újraírása.
 
 ## 1. Termékvízió
 
-A CalicoChef egy közös háztartási étkezéstervező. A háztartás tagjai egy közös naptárban tervezik meg a heti és havi étkezéseket, recepteket rendelnek hozzájuk, kezelik a személyenkénti adagokat és alternatívákat, majd a rendszer ezekből automatikusan összeállítja a bevásárlólistát.
+A CalicoChef segít előre megtervezni az étkezéseket, recepteket rendszerezni, és átlátni a tervezett napi energiabevitelt, valamint a fehérje-, szénhidrát- és zsírbevitelt. A felület legyen barátságos, mobilon is kényelmes, és ne szégyenítse meg a felhasználót, ha eltér a kitűzött céltól.
 
-### Alapelvek
-- A háztartás az elsődleges szervezési egység.
-- Több felhasználó egyszerre szerkesztheti a közös menüt, valós idejű szinkronizálással.
-- Egy étkezésen belül közös főétel és személyenkénti alternatívák is megadhatók.
-- A heti és havi nézet ugyanazt az adatforrást használja.
-- A bevásárlólista a menüből és az otthoni készletből számolódik, de a manuális tételeket is megőrzi.
-- A kalória- és makrószámítás opcionális; nem ez a fő felhasználói élmény.
-- Az allergiák és az étkezési preferenciák külön kezelendők.
+Az alkalmazás nem diagnosztikai eszköz, és nem helyettesíti az orvosi vagy dietetikusi tanácsadást. A kalória- és tápértékadatok becslések lehetnek; az allergének és összetevők ellenőrzése a felhasználó felelőssége.
 
-## 2. Célfelhasználók és jogosultságok
+## 2. Meglévő technikai alap
 
-Egy felhasználó több háztartás tagja is lehet.
+- Frontend: React 19, TypeScript, TanStack Start/Router és Tailwind CSS.
+- Adatok és hitelesítés: Supabase.
+- Lekérdezések és cache: TanStack Query.
+- Receptadatok: adag, kcal, fehérje, szénhidrát, zsír, hozzávalók és elkészítési lépések.
+- Étkezéstervező: heti napokra bontott étkezési helyek és adagok.
+- Napi napló: szöveges bejegyzés, éhségérzet, hangulat és aktivitás/energia önértékelése.
 
-| Szerep | Jogosultság |
-|---|---|
-| Háztartásgazda | Háztartásbeállítások, meghívók, tagok és jogosultságok kezelése; teljes szerkesztés |
-| Szerkesztő | Menü, receptek, készlet és bevásárlólista módosítása |
-| Tag | Menü megtekintése, saját profil és étkezési jelenlét kezelése; a háztartás beállításai szerint szerkesztés |
-| Megtekintő | Olvasási hozzáférés |
+A meglévő komponenseket és adatbázissémát fokozatosan kell fejleszteni, kis, ellenőrizhető módosításokkal.
 
-A felhasználói szerepkör külön fogalom a személyes étkezési profiltól.
+## 3. MVP – elsődleges funkciók
 
-## 3. Funkcionális terjedelem
+### A. Napi és heti étrend
+- Heti napok közötti navigáció.
+- Étkezési helyek és receptek hozzárendelése.
+- Adagszám módosítása, étkezésenkénti kalóriabecslés.
+- Napi összesített kalóriabevitel és a személyes célhoz viszonyított áttekintés.
+- Makrótápanyagok napi összesítése.
+- Üres, betöltési, mentési és hibaállapotok egyértelmű jelzése.
 
-### P0 – MVP, az első használható kiadás
+### B. Receptgyűjtemény
+- Saját recept létrehozása, szerkesztése és törlése.
+- Hozzávalók mennyiséggel és mértékegységgel.
+- Adagszám és tápértékadatok.
+- Elkészítési lépések és opcionális borítókép.
+- Külső receptkeresés egyértelmű forrásmegjelöléssel.
 
-1. **Háztartások és fiókok**
-   - Regisztráció és bejelentkezés.
-   - Háztartás létrehozása és meghívólink.
-   - Tagok és szerepkörök kezelése.
-   - Több háztartás közötti váltás előkészítése.
+### C. Bevásárlólista
+- A megtervezett ételek hozzávalóinak összesítése.
+- Azonos nevű és mértékegységű tételek összevonása.
+- Tételek kipipálása és nyomtatható lista.
+- Következő fejlesztési körben a lista tartós mentése, kézi tételek és készletkezelés.
 
-2. **Heti és havi menütervező**
-   - Hét/hónap navigáció és aktuális dátumra ugrás.
-   - Reggeli, tízórai, ebéd, uzsonna, vacsora és egyéni étkezéstípusok.
-   - Étkezés létrehozása, szerkesztése, másolása, áthelyezése és törlése.
-   - Recept vagy gyorsan felvett étel hozzárendelése.
-   - Heti terv másolása egy másik hétre.
+### D. Személyes profil és célok
+- Napi kalóriacél kézi beállítása.
+- Következő lépésként opcionális profiladatok és átlátható célbecslés.
+- A felhasználó bármikor módosíthassa a javasolt célt.
+- A rendszer ne adjon szélsőséges vagy egészségügyileg kockázatos fogyási tanácsot.
+- Külső aktivitásintegráció csak tényleges működés esetén jelenjen meg csatlakoztatottként.
 
-3. **Rugalmas étkezési hozzárendelések**
-   - Étkezési alkalom, étel és személyes hozzárendelés külön adatmodellben.
-   - Több étel egy étkezési alkalomhoz.
-   - Résztvevők, személyenkénti adagok és alternatívák.
-   - Étkezési jelenlét napok/étkezések szerint.
+### E. Napi napló
+- Rövid napi jegyzet.
+- Éhségérzet, hangulat és energiaszint/aktivitás rögzítése.
+- Semleges, támogató nyelvezet; a cél túllépése ne legyen büntetésként megjelenítve.
 
-4. **Receptek**
-   - Saját receptek létrehozása és szerkesztése.
-   - Hozzávalók, mennyiségek, mértékegységek, elkészítési lépések és adagszám.
-   - Keresés, címkék és kedvencek.
-   - Receptverzió vagy pillanatkép az étkezéshez, hogy a későbbi receptmódosítás ne írja át észrevétlenül a már megtervezett menüt.
+## 4. Későbbi fejlesztések
 
-5. **Közös bevásárlólista**
-   - Menü hozzávalóinak összesítése.
-   - Azonos alapanyagok mennyiségeinek összevonása.
-   - Manuális tételek hozzáadása.
-   - Kategóriák, kipipálás, vásárlási állapot.
-   - A manuális és már megvásárolt tételek megőrzése újrageneráláskor.
+- Fehérje-, szénhidrát- és zsírcélok beállítása és napi haladásuk megjelenítése.
+- Többnapos étrendjavaslat a felhasználó preferenciái és kizárásai alapján.
+- Étkezési preferenciák és allergének kezelése, figyelmeztetésekkel.
+- Havi áttekintő és trendek.
+- Bevásárlólista kézi tételekkel és korábbi listák megőrzésével.
+- Receptcímkék, kedvencek, szűrők és saját étkezéssablonok.
+- Export és nyomtatható heti terv.
+- Opcionális, ingyenes vagy saját kulccsal használható AI-segítség; az alapfunkciók AI nélkül is működjenek.
 
-6. **Valós idejű együttműködés**
-   - Adatváltozások élő megjelenítése más tagoknál.
-   - Mentési/szinkronizálási állapot kijelzése.
-   - Verzióellenőrzés és ütközéskezelés.
-   - Hibás mentéskor újrapróbálás, adatvesztés nélküli visszajelzés.
+## 5. Vizuális irány
 
-7. **Biztonság és használhatóság**
-   - Háztartásonkénti adatelkülönítés.
-   - Szerveroldali jogosultság-ellenőrzés és adatbázis-RLS.
-   - Reszponzív, mobilon is kényelmes felület.
-   - Betöltési, üres, hiba- és offline/szinkronizálási állapotok.
+- Barátságos, meleg és modern megjelenés.
+- Mobilközpontú, könnyen kezelhető kártyák és alsó navigáció.
+- Magyar nyelvű feliratok, dátumok és mértékegységek.
+- Jó kontraszt, billentyűzettel használható vezérlők és egyértelmű fókuszállapotok.
+- A cica-karakter maradhat visszafogott márkaelem, de a tápérték és az étkezési terv legyen az elsődleges információ.
 
-### P1 – következő kiadás
-- Otthoni készlet: mennyiség, egység, tárolási hely és opcionális lejárat.
-- Maradékok és felhasználhatósági dátum.
-- Készlet levonása a bevásárlási szükségletből, duplázás nélkül.
-- Heti menüsablonok és korábbi hetek újrafelhasználása.
-- Receptképek és külső receptimport, a forrás licencének figyelembevételével.
-- Opcionális becsült költség és tápérték.
+## 6. Adatbiztonság
 
-### P2 – későbbi fejlesztések
-- AI-alapú heti menüjavaslatok.
-- Költségkerethez és otthoni készlethez igazított ajánlások.
-- Ár-összehasonlítás és bolti integráció, ha megfelelő adatforrás elérhető.
-- PWA telepíthetőség és továbbfejlesztett offline működés.
-- Export, nyomtatható heti terv és bevásárlólista.
+- Titkos kulcs nem kerülhet a kliensoldali kódba vagy a Git-tárolóba.
+- A `.env` fájlok maradjanak a Git által figyelmen kívül hagyva; csak helyi konfigurációra használjuk őket.
+- Supabase RLS és felhasználóhoz kötött jogosultságok ellenőrzése.
+- A felhasználó csak a saját profilját, receptjeit és naplóját olvashassa/módosíthassa.
+- A törlés és a külső integrációk státusza legyen egyértelmű.
+- Érzékeny adatot és kulcsot soha ne írjunk naplóba vagy hibajelentésbe.
 
-## 4. Képernyőterv
+## 7. Fejlesztési sorrend
 
-### Fő navigáció
-1. **Menütervező** – heti/havi naptár, napok, étkezések, résztvevők.
-2. **Receptek** – keresés, szűrők, kedvencek, receptszerkesztő.
-3. **Bevásárlólista** – összesített és manuális tételek, kipipálás.
-4. **Készlet és maradékok** – P1.
-5. **Háztartás** – tagok, meghívók, szerepkörök, profilok és beállítások.
+1. Meglévő komponensek és adatbázis-séma áttekintése.
+2. Magyar nyelvű alkalmazáskeret és navigáció.
+3. Napi kalória- és makróösszesítés.
+4. Recept- és étrendtervező felület finomítása.
+5. Bevásárlólista mentésének és állapotainak megbízhatóvá tétele.
+6. Profil és célbeállítások fejlesztése.
+7. Mobilos, jogosultsági és hibakezelési ellenőrzések.
+8. Csak ezután új, nagyobb funkciók bevezetése.
 
-### Fő munkafolyamat
-Hét kiválasztása → ételek/receptek hozzáadása → résztvevők és adagok beállítása → hozzávalók összesítése → készlet figyelembevétele → közös bevásárlólista.
+## 8. Elfogadási kritériumok az első fejlesztési körhöz
 
-### Heti menütervező
-- Asztali nézet: hét oszlopai és étkezési kártyák.
-- Mobilnézet: napválasztó és az adott nap étkezései.
-- Étkezésenként látható név, adagok, résztvevők és alternatívák.
-- Gyors műveletek: hozzáadás, szerkesztés, másolás, áthelyezés.
-- Valós idejű frissítés és egyértelmű mentési állapot.
-
-### Étkezésszerkesztő
-- Dátum és étkezéstípus.
-- Recept vagy szabad szöveges étel.
-- Hozzárendelt ételek és személyek.
-- Adagok és alternatívák.
-- Megjegyzések.
-- Hozzávalóigény előnézete.
-
-## 5. Javasolt technikai architektúra
-
-A meglévő repó technológiáihoz igazodva a javasolt irány:
-- **Frontend:** React + TypeScript, reszponzív komponensekkel.
-- **Adatbázis és backend:** Supabase / PostgreSQL.
-- **Hitelesítés:** Supabase Auth.
-- **Valós idejű szinkron:** Supabase Realtime, jogosultságokkal korlátozott csatornákkal.
-- **Biztonság:** Row Level Security (RLS), szerveroldali ellenőrzések.
-- **Telepítés:** a meglévő projekt beállításaihoz illeszkedő hosting; a pontos konfigurációt a repó auditja után kell véglegesíteni.
-
-Az ingyenes csomagok aktuális korlátait indulás előtt ellenőrizni kell; a rendszer ne függjön kötelezően fizetős AI-szolgáltatástól.
-
-### Logikai architektúra
-Böngésző → hitelesítés és adat API → jogosultság/RLS → PostgreSQL → valós idejű események → többi aktív kliens.
-
-A kliensoldali felületi elrejtés önmagában nem jogosultságvédelem. Minden adatmódosítást a backendnek/adatbázisnak is engedélyeznie kell.
-
-## 6. Kezdeti adatmodell
-
-| Entitás | Felelősség |
-|---|---|
-| households | Háztartás és beállítások |
-| household_members | Felhasználó, háztartás és szerepkör kapcsolata |
-| member_profiles | Preferenciák, allergiák, adagok és célok |
-| meal_slots | Dátumhoz és étkezéstípushoz tartozó alkalom |
-| meal_items | Az alkalomhoz tartozó ételek/receptek |
-| meal_assignments | Személy, étel és adag hozzárendelése |
-| recipes | Recept és verzió |
-| recipe_ingredients | Receptösszetevők, mennyiség és egység |
-| ingredients | Normalizált alapanyagjegyzék |
-| shopping_lists | Háztartási bevásárlólisták |
-| shopping_items | Automatikus vagy manuális tételek és státusz |
-| pantry_items | P1: otthoni készlet |
-| leftovers | P1: maradékok |
-| activity_log | Fontos változások auditja |
-
-Minden háztartási adatnak egyértelmű háztartáskapcsolattal kell rendelkeznie. Az alapanyagoknál a név mellett normalizált egységet és mennyiséget is tárolni kell. g, kg, ml és l között lehet szabályos átváltás; darab és tömeg között csak alapanyagspecifikus szabály alapján.
-
-## 7. Valós idejű szerkesztés és konzisztencia
-
-- A kliens csak a szerver által megerősített mentést jelezze véglegesnek.
-- A rekordok használjanak updated_at és/vagy verziómezőt.
-- Különböző mezők párhuzamos módosítását meg kell őrizni.
-- Azonos mező konfliktusakor verzióellenőrzés és felhasználói visszajelzés szükséges.
-- A törlés és egyidejű szerkesztés konfliktusa legyen látható.
-- A bevásárlólista automatikus tételei újraszámíthatók legyenek, a manuális és már megvásárolt tételek ne vesszenek el.
-- A tervezett készletfelhasználást külön kell kezelni a tényleges felhasználástól.
-
-## 8. Biztonsági és adatvédelmi követelmények
-
-- RLS minden háztartási adattáblán.
-- Tagság-ellenőrzés minden olvasásnál és írásnál.
-- Meghívólinkek lejárata és visszavonhatósága.
-- Privát profiladatok ne kerüljenek nyilvános recept- vagy háztartási lekérdezésekbe.
-- Titkos kulcs csak szerveroldalon szerepelhet.
-- Adat-export és törlési folyamat megtervezése.
-- Allergia külön kezelendő a preferenciától; a felület ne állítsa, hogy automatikusan garantálja az étel allergénmentességét.
-
-## 9. Elfogadási kritériumok az MVP-hez
-
-- Két külön felhasználó ugyanahhoz a háztartáshoz tud csatlakozni.
-- Egy menümódosítás másik bejelentkezett kliensben is megjelenik.
-- Heti és havi nézet ugyanazokat az adatokat mutatja.
-- Egy étkezéshez több étel és személyenkénti adag rendelhető.
-- Recept-hozzávalókból összevont bevásárlólista készül.
-- A manuális és megvásárolt tételek megmaradnak újraszámításkor.
-- Más háztartás adatai jogosulatlanul nem olvashatók és nem módosíthatók.
-- Sikertelen mentéskor a felhasználó értesül a hibáról, és a módosítás nem vész el csendben.
-- A fő feladatok mobilnézetben is elvégezhetők.
-
-## 10. Fejlesztési sorrend
-
-1. A meglévő repó és adatbázis-migrációk auditja; a terv összehangolása a már létező kóddal.
-2. Képernyővázlat és interaktív heti menütervező.
-3. Háztartás, tagság, jogosultságok és RLS.
-4. Menünaptár, ételek, hozzárendelések és valós idejű frissítés.
-5. Receptek és hozzávalók.
-6. Bevásárlólista és menüből számolt igény.
-7. Párhuzamos szerkesztési, jogosultsági és mobiltesztek.
-8. Kiadás; ezt követően készlet, maradékok és további automatizmusok.
-
-## 11. Nyitott döntések
-
-- Végleges terméknév és vizuális arculat.
-- A hét kezdőnapja és alapértelmezett étkezéstípusok.
-- A háztartási tagok alapértelmezett szerkesztési jogosultsága.
-- Mennyire részletes legyen az offline működés az első kiadásban.
-- Receptadatok kézi bevitele vagy külső adatforrás az MVP-ben.
-- A készletkezelés MVP-be kerüljön-e, vagy maradjon P1.
-
-## 12. Következő konkrét lépés
-
-A terv első lépése ne az egész alkalmazás egyszerre történő átírása legyen. Először vizsgáljuk át a jelenlegi projekt képernyőit, adatbázisát és Supabase-szabályait, majd egy külön, jól tesztelhető munkaszakaszban valósítsuk meg a heti menütervező első verzióját.
-
-**Első fejlesztési feladat:** heti naptár + étkezésszerkesztő + háztartási adatok biztonságos betöltése, meglévő funkciók regressziója nélkül.
+- A fő navigáció és a főképernyő magyarul jelenik meg.
+- A kiválasztott nap étkezéseihez tartozó kcal és makrók az adagokkal arányosan számolódnak.
+- A napi kalóriaösszeg a recept adagszámának változásakor frissül.
+- A recept-, étrend- és bevásárlólista-funkciók továbbra is a meglévő Supabase-adatokkal dolgoznak.
+- Nem jelenik meg sikeresnek látszó, de valójában nem működő külső szinkronizálás.
+- A felület telefonon is használható marad.
