@@ -32,7 +32,7 @@ export function PlannerView() {
   const over = totalKcal > dailyTarget;
 
   const assignRecipe = (slotId: string, recipe: Recipe) => {
-    updateSlot.mutate({ id: slotId, patch: { recipe_id: recipe.id, adagings: recipe.base_servings } });
+    updateSlot.mutate({ id: slotId, patch: { recipe_id: recipe.id, servings: recipe.base_servings } });
     setPicker(null);
   };
 
