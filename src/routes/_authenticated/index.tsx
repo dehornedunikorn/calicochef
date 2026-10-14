@@ -47,6 +47,11 @@ function Index() {
 
   const [day, setDay] = useState(0);
   const target = profile?.target_kcal ?? 2000;
+  const macroTargets = {
+    protein: profile?.target_protein_g ?? null,
+    carbs: profile?.target_carbs_g ?? null,
+    fat: profile?.target_fat_g ?? null,
+  };
   const todaySlots = slots.filter((s) => s.day_idx === day);
   const consumed = todaySlots.reduce((sum, s) => sum + mealKcal(s, recipes), 0);
   const pct = Math.min(100, (consumed / target) * 100);
@@ -131,6 +136,7 @@ function Index() {
             pct={pct}
             over={over}
             todayMacros={todayMacros}
+            macroTargets={macroTargets}
             todayMeals={todayMeals}
           />
         )}
@@ -175,6 +181,7 @@ function HomeContent({
   pct,
   over,
   todayMacros,
+  macroTargets,
   todayMeals,
 }: {
   day: number;
@@ -183,6 +190,7 @@ function HomeContent({
   pct: number;
   over: boolean;
   todayMacros: { protein: number; carbs: number; fat: number };
+  macroTargets: { protein: number | null; carbs: number | null; fat: number | null };
   todayMeals: { id: string; name: string; kcal: number; emoji: string; slotName: string }[];
 }) {
   const { data: journal } = useJournal(day);
@@ -232,13 +240,15 @@ function HomeContent({
 
       <section className="mt-4 grid grid-cols-3 gap-2" aria-label="Napi makrotápanyagok">
         {[
-          { label: "Fehérje", value: todayMacros.protein, unit: "g", emoji: "🥚" },
-          { label: "Szénhidrát", value: todayMacros.carbs, unit: "g", emoji: "🍞" },
-          { label: "Zsír", value: todayMacros.fat, unit: "g", emoji: "🥑" },
+          { label: "Fehérje", value: todayMacros.protein, goal: macroTargets.protein, emoji: "🥚" },
+          { label: "Szénhidrát", value: todayMacros.carbs, goal: macroTargets.carbs, emoji: "🍞" },
+          { label: "Zsír", value: todayMacros.fat, goal: macroTargets.fat, emoji: "🥑" },
         ].map((macro) => (
           <article key={macro.label} className="cartoon-card-soft p-3 text-center">
             <p className="text-lg" aria-hidden="true">{macro.emoji}</p>
-            <p className="mt-1 text-lg font-extrabold tabular-nums">{Math.round(macro.value)} <span className="text-xs">g</span></p>
+            <p className="mt-1 text-lg font-extrabold tabular-nums">
+              {Math.round(macro.value)} <span className="text-xs">/ {macro.goal == null ? "—" : macro.goal} g</span>
+            </p>
             <p className="text-[11px] font-semibold text-muted-foreground">{macro.label}</p>
           </article>
         ))}
