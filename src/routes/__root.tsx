@@ -79,11 +79,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Calico — your cozy meal companion" },
-      { name: "description", content: "Calico is a mobile-first web app for tracking meals, macros, and mood with a cute cartoon cat theme." },
-      { name: "author", content: "Calico" },
+      { title: "CalicoChef – személyes étrendtervező" },
+      { name: "description", content: "A CalicoChef személyre szabható étrendtervező receptekkel, kalória- és makrószámítással." },
+      { name: "author", content: "CalicoChef" },
       { property: "og:title", content: "Calico — your cozy meal companion" },
-      { property: "og:description", content: "Calico is a mobile-first web app for tracking meals, macros, and mood with a cute cartoon cat theme." },
+      { property: "og:description", content: "A CalicoChef személyre szabható étrendtervező receptekkel, kalória- és makrószámítással." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Calico" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -108,7 +108,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="hu">
       <head>
         <HeadContent />
       </head>
