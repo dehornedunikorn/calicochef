@@ -199,8 +199,8 @@ function useSignedCover(path: string | null, setSrc: (s: string | null) => void)
 }
 
 function Cookbook({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) {
-  const [servings, setAdagok] = useState(recipe.base_servings);
-  const mult = servings / recipe.base_servings;
+  const [servings, setAdagok] = useState(Math.max(1, recipe.base_servings || 1));
+  const mult = servings / Math.max(1, recipe.base_servings || 1);
   const [coverSrc, setCoverSrc] = useState<string | null>(null);
   useSignedCover(recipe.cover_url, setCoverSrc);
 
