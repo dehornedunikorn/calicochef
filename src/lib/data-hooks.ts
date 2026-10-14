@@ -32,6 +32,15 @@ export type Profile = {
   id: string;
   display_name: string | null;
   target_kcal: number;
+  age_years: number | null;
+  height_cm: number | null;
+  weight_kg: number | null;
+  sex: "female" | "male" | null;
+  activity_level: "sedentary" | "light" | "moderate" | "active" | "very_active";
+  goal_type: "lose" | "maintain" | "gain";
+  target_protein_g: number | null;
+  target_carbs_g: number | null;
+  target_fat_g: number | null;
 };
 
 export type Journal = {
@@ -61,7 +70,7 @@ export function useProfile() {
     queryFn: async (): Promise<Profile> => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, display_name, target_kcal")
+        .select("id, display_name, target_kcal, age_years, height_cm, weight_kg, sex, activity_level, goal_type, target_protein_g, target_carbs_g, target_fat_g")
         .maybeSingle();
       if (error) throw error;
       if (!data) throw new Error("Profile not found");
@@ -73,7 +82,7 @@ export function useProfile() {
 export function useUpdateProfile() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (patch: Partial<Pick<Profile, "target_kcal" | "display_name">>) => {
+    mutationFn: async (patch: Partial<Pick<Profile, "target_kcal" | "display_name" | "age_years" | "height_cm" | "weight_kg" | "sex" | "activity_level" | "goal_type" | "target_protein_g" | "target_carbs_g" | "target_fat_g">>) => {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) throw new Error("Not signed in");
       const { error } = await supabase
