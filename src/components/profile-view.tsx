@@ -11,8 +11,6 @@ export function ProfileView() {
   const updateProfile = useUpdateProfile();
   const navigate = useNavigate();
   const [target, setTarget] = useState<number>(profile?.target_kcal ?? 2000);
-  const [synced, setSzinkronizálásed] = useState(false);
-  const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
     if (profile) setTarget(profile.target_kcal);
@@ -97,16 +95,10 @@ export function ProfileView() {
           <div className="flex-1">
             <p className="text-sm font-semibold">Google Fit</p>
             <p className="text-[11px] text-muted-foreground">
-              {synced ? "Connected! 🐾" : "Aktivitás és elégetett kalória szinkronizálása."}
+              {"A Google Fit-kapcsolat fejlesztés alatt áll."}
             </p>
           </div>
-          <button
-            onClick={handleSync}
-            disabled={syncing}
-            className="rounded-full bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground active:scale-95 disabled:opacity-50"
-          >
-            {syncing ? "Szinkronizálás…" : synced ? "Szinkronizálva ✓" : "Sync"}
-          </button>
+          <span className="rounded-full bg-secondary px-3.5 py-2 text-xs font-semibold text-muted-foreground">Hamarosan</span>
         </div>
       </article>
 
