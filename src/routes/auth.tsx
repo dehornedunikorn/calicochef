@@ -41,7 +41,7 @@ function AuthPage() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: "https://calicochef.vercel.app",
         },
       });
       if (error) throw error;
@@ -59,7 +59,7 @@ function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin },
+          options: { emailRedirectTo: "https://calicochef.vercel.app" },
         });
         if (error) throw error;
         toast.success("A regisztráció megerősítéséhez ellenőrizd az e-mail-fiókodat 🐾");
