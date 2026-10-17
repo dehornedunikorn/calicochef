@@ -20,6 +20,9 @@
     "noUnusedParameters": false
   },
   "include": [
-    "src"
+    "src/main.tsx",
+    "src/App.tsx",
+    "src/supabase.ts",
+    "src/vite-env.d.ts"
   ]
 }
